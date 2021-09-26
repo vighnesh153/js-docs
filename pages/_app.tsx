@@ -4,7 +4,6 @@ import Head from 'next/head';
 
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -13,21 +12,15 @@ import '@fontsource/roboto/700.css';
 
 import 'styles/globals.css';
 
-import createEmotionCache from 'util/createEmotionCache';
 import theme from 'util/theme';
 
-// Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
+import Navbar from 'components/Navbar';
 
-interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache;
-}
-
-const App: React.FC<MyAppProps> = (props) => {
-  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
+const App: React.FC<AppProps> = (props) => {
+  const { Component, pageProps } = props;
 
   return (
-    <CacheProvider value={emotionCache}>
+    <React.Fragment>
       <Head>
         <title>Vighnesh's Docs | Notes</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -41,9 +34,10 @@ const App: React.FC<MyAppProps> = (props) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Navbar />
         <Component {...pageProps} />
       </ThemeProvider>
-    </CacheProvider>
+    </React.Fragment>
   );
 };
 
