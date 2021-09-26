@@ -45,6 +45,9 @@ const TreeItem = styled((props: TreeItemProps) => (
     paddingLeft: 18,
     borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
+  [`& .${treeItemClasses.label}`]: {
+    whiteSpace: 'nowrap',
+  },
 }));
 
 const TreeView = () => {
@@ -55,7 +58,7 @@ const TreeView = () => {
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
-      sx={{ height: 264, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+      sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
       <TreeItem nodeId="1" label="Main">
         <TreeItem nodeId="2" label="Hello" />
@@ -65,11 +68,28 @@ const TreeView = () => {
             <TreeItem nodeId="9" label="Child 1" />
             <TreeItem nodeId="10" label="Child 2" />
             <TreeItem nodeId="11" label="Child 3" />
+            <TreeItem nodeId="12" label="Child 3">
+              <TreeItem nodeId="13" label="Child 3" />
+              <TreeItem nodeId="14" label="Child 3">
+                <TreeItem nodeId="15" label="Sub-subtree with children">
+                  <TreeItem nodeId="16" label="Sub-subtree with children" />
+                </TreeItem>
+              </TreeItem>
+            </TreeItem>
           </TreeItem>
           <TreeItem nodeId="8" label="Hello" />
         </TreeItem>
         <TreeItem nodeId="4" label="World" />
         <TreeItem nodeId="5" label="Something something" />
+        <TreeItem nodeId="005" label="Something something" />
+        <TreeItem nodeId="015" label="Something something" />
+        <TreeItem nodeId="025" label="Something something" />
+        <TreeItem nodeId="035" label="Something something" />
+        <TreeItem nodeId="045" label="Something something" />
+        <TreeItem nodeId="055" label="Something something" />
+        <TreeItem nodeId="065" label="Something something" />
+        <TreeItem nodeId="075" label="Something something" />
+        <TreeItem nodeId="085" label="Something something" />
       </TreeItem>
     </MuiTreeView>
   );

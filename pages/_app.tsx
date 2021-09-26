@@ -34,8 +34,12 @@ const App: React.FC<AppProps> = (props) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar />
-        <Component {...pageProps} />
+        <div className="_app-body">
+          <Navbar />
+          <div className="main">
+            <Component {...pageProps} />
+          </div>
+        </div>
       </ThemeProvider>
     </React.Fragment>
   );
