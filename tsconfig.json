@@ -6,7 +6,8 @@
     "paths": {
       "components/*": ["components/*"],
       "styles/*": ["styles/*"],
-      "util/*": ["util/*"]
+      "util/*": ["util/*"],
+      "bundler/*": ["bundler/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
