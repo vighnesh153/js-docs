@@ -8,15 +8,23 @@ a {
 
   display: flex;
   flex-direction: column;
+
+  & > .main {
+    flex-grow: 1;
+    overflow: auto;
+
+    & > * {
+      height: 100%;
+    }
+  }
 }
 
-._app-body > .main {
-  flex-grow: 1;
-  overflow: auto;
-}
+.hide-scrollbar {
+  scrollbar-width: none;
 
-._app-body > .main > * {
-  height: 100%;
+  &::-webkit-scrollbar {
+    background: transparent;
+  }
 }
 
 .react-resizable-handle {

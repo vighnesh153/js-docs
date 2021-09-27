@@ -41,8 +41,8 @@ const TreeItem = styled((props: TreeItemProps) => (
     },
   },
   [`& .${treeItemClasses.group}`]: {
-    marginLeft: 15,
-    paddingLeft: 18,
+    marginLeft: 10,
+    paddingLeft: 10,
     borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
   [`& .${treeItemClasses.label}`]: {
@@ -50,10 +50,13 @@ const TreeItem = styled((props: TreeItemProps) => (
   },
 }));
 
-const TreeView = () => {
+interface TreeViewProps
+  extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
+
+const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
   return (
     <MuiTreeView
-      aria-label="customized"
+      {...props}
       defaultExpanded={['1']}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
