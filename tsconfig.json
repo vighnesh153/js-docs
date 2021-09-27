@@ -7,7 +7,8 @@
       "components/*": ["components/*"],
       "styles/*": ["styles/*"],
       "util/*": ["util/*"],
-      "bundler/*": ["bundler/*"]
+      "models/*": ["models/*"],
+      "store/*": ["store/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

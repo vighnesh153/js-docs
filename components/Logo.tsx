@@ -1,7 +1,3 @@
-/**
- * @author Vighnesh Raut <rvighnes@amazon.com>
- */
-
 import React from 'react';
 import styled from 'styled-components';
 
