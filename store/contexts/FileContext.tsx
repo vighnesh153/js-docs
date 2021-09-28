@@ -10,7 +10,7 @@ import {
 import Actions, { Direction } from 'store/actions';
 
 import * as actionCreators from 'store/action-creators';
-import { CellType } from 'models/Cell';
+import { CellType, ICell } from 'models/Cell';
 
 interface FileContext {
   bundles: BundlesState;
@@ -24,12 +24,17 @@ const FileContext = React.createContext<FileContext>({
   dispatch: () => null,
 });
 
+/**
+ * Should only be used inside file context provider component's sub-tree
+ */
 export const useFileContextActions = () => {
   const { dispatch } = useContext(FileContext);
 
   return {
     createBundle: (cellId: string, input: string) =>
       actionCreators.createBundle(cellId, input)(dispatch),
+    initializeCells: (cells: ICell[]) =>
+      dispatch(actionCreators.initializeCells(cells)),
     deleteCell: (id: string) => dispatch(actionCreators.deleteCell(id)),
     moveCell: (id: string, direction: Direction) =>
       dispatch(actionCreators.moveCell(id, direction)),

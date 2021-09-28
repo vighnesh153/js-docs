@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { Box } from '@mui/system';
@@ -8,9 +8,8 @@ import CodeEditor from 'components/CodeEditor';
 import Resizable from 'components/Resizable';
 
 import Cell from 'models/Cell';
-// import { useActions } from '../hooks/use-actions';
-// import { useTypedSelector } from '../hooks/use-typed-selector';
-// import { useCumulativeCode } from '../hooks/use-cumulative-code';
+import FileContext, { useFileContextActions } from 'store/contexts/FileContext';
+import useCumulativeCode from 'hooks/useCumulativeCode';
 
 const ProgressCover = styled(Box)`
   height: 100%;
@@ -39,23 +38,23 @@ interface CodeCellProps {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  // const { updateCell, createBundle } = useActions();
-  // const bundle = useTypedSelector((state) => state.bundles[cell.id]);
-  // const cumulativeCode = useCumulativeCode(cell.id);
+  const { createBundle, updateCell } = useFileContextActions();
+  const { bundles } = useContext(FileContext);
+  const bundle = bundles[cell.id];
+  const cumulativeCode = useCumulativeCode(cell.id);
 
   useEffect(() => {
-    if (!bundle) {
+    const initiateCreateBundle = () => {
       createBundle(cell.id, cumulativeCode);
+    };
+
+    if (!bundle) {
+      initiateCreateBundle();
       return;
     }
 
-    const timer = setTimeout(async () => {
-      createBundle(cell.id, cumulativeCode);
-    }, 750);
-
-    return () => {
-      clearTimeout(timer);
-    };
+    const timer = setTimeout(initiateCreateBundle, 750);
+    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cumulativeCode, cell.id, createBundle]);
 

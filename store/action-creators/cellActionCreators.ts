@@ -1,12 +1,20 @@
-import { CellType } from 'models/Cell';
+import { CellType, ICell } from 'models/Cell';
 import {
   DeleteCellAction,
   Direction,
+  InitializeCellsAction,
   InsertCellAfterAction,
   MoveCellAction,
   UpdateCellAction,
 } from 'store/actions';
 import ActionType from 'store/action-types';
+
+export const initializeCells = (cells: ICell[]): InitializeCellsAction => {
+  return {
+    type: ActionType.INITIALIZE_CELLS,
+    payload: cells,
+  };
+};
 
 export const updateCell = (id: string, content: string): UpdateCellAction => {
   return {

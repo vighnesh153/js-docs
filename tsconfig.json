@@ -5,10 +5,11 @@
     "baseUrl": ".",
     "paths": {
       "components/*": ["components/*"],
-      "styles/*": ["styles/*"],
-      "util/*": ["util/*"],
+      "hooks/*": ["hooks/*"],
       "models/*": ["models/*"],
-      "store/*": ["store/*"]
+      "store/*": ["store/*"],
+      "styles/*": ["styles/*"],
+      "util/*": ["util/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
