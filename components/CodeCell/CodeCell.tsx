@@ -45,7 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   useEffect(() => {
     const initiateCreateBundle = () => {
-      createBundle(cell.id, cumulativeCode);
+      createBundle(cell.id, cumulativeCode).then(() => {});
     };
 
     if (!bundle) {
