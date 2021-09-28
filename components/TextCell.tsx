@@ -4,11 +4,11 @@ import MDEditor from '@uiw/react-md-editor';
 import Cell from 'models/Cell';
 import { useFileContextActions } from 'store/contexts/FileContext';
 
-interface TextEditorProps {
+interface TextCellProps {
   cell: Cell;
 }
 
-const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
+const TextCell: React.FC<TextCellProps> = ({ cell }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [editing, setEditing] = useState(false);
   const { updateCell } = useFileContextActions();
@@ -52,4 +52,4 @@ const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
   );
 };
 
-export default TextEditor;
+export default TextCell;
