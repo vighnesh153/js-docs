@@ -29,9 +29,9 @@ class Cell {
     private _content: string
   ) {}
 
-  clone = () => {
+  clone = (id?: string) => {
     const newId = uuid();
-    return new Cell(newId, this.type, this.content);
+    return new Cell(id || newId, this.type, this.content);
   };
 
   setContent = (content: string): Cell => {

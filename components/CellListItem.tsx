@@ -32,7 +32,8 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   } else {
     child = (
       <React.Fragment>
-        <TextEditor cell={cell} />
+        {/*<TextEditor cell={cell} />*/}
+        <h2>Text editor goes here</h2>
         <ActionsBar id={cell.id} />
       </React.Fragment>
     );

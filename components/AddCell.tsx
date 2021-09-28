@@ -18,7 +18,7 @@ const AddCell: React.FC<AddCellProps> = ({ forceVisible, previousCellId }) => {
       className={`add-cell`}
       sx={{
         position: 'relative',
-        opacity: forceVisible ? 1 : 0,
+        opacity: forceVisible ? 1 : 0.1,
         transition: 'opacity 0.3s ease-in 0.1s',
         margin: '8px 0',
         '&:hover': {
@@ -38,6 +38,7 @@ const AddCell: React.FC<AddCellProps> = ({ forceVisible, previousCellId }) => {
       >
         <Button
           size={'small'}
+          variant={'contained'}
           startIcon={<Add />}
           onClick={() => insertCellAfter(previousCellId, 'code')}
         >
@@ -45,6 +46,7 @@ const AddCell: React.FC<AddCellProps> = ({ forceVisible, previousCellId }) => {
         </Button>
         <Button
           size={'small'}
+          variant={'contained'}
           startIcon={<Add />}
           onClick={() => insertCellAfter(previousCellId, 'text')}
         >

@@ -35,7 +35,7 @@ const cellsReducerFunc: Reducer<CellsState, Actions> = (
     case ActionType.UPDATE_CELL:
       const { id, content } = action.payload;
 
-      state.data[id] = state.data[id].clone().setContent(content);
+      state.data[id] = state.data[id].clone(id).setContent(content);
 
       break;
     case ActionType.DELETE_CELL:
