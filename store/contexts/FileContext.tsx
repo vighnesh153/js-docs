@@ -9,7 +9,14 @@ import {
 } from 'store/reducers';
 import Actions, { Direction } from 'store/actions';
 
-import * as actionCreators from 'store/action-creators';
+import {
+  createBundle,
+  initializeCells,
+  moveCell,
+  deleteCell,
+  insertCellAfter,
+  updateCell,
+} from 'store/action-creators';
 import { CellType, ICell } from 'models/Cell';
 
 interface FileContext {
@@ -30,26 +37,21 @@ const FileContext = React.createContext<FileContext>({
 export const useFileContextActions = () => {
   const { dispatch } = useContext(FileContext);
 
-  return {
-    createBundle: (cellId: string, input: string) =>
-      actionCreators.createBundle(cellId, input)(dispatch),
-    initializeCells: (cells: ICell[]) =>
-      dispatch(actionCreators.initializeCells(cells)),
-    deleteCell: (id: string) => dispatch(actionCreators.deleteCell(id)),
-    moveCell: (id: string, direction: Direction) =>
-      dispatch(actionCreators.moveCell(id, direction)),
-    updateCell: (id: string, content: string) =>
-      dispatch(actionCreators.updateCell(id, content)),
-    insertCellAfter: (id: string | null, cellType: CellType) =>
-      dispatch(actionCreators.insertCellAfter(id, cellType)),
-  };
+  return useMemo(
+    () => ({
+      createBundle: (cellId: string, input: string) => createBundle(cellId, input)(dispatch),
+      initializeCells: (cells: ICell[]) => dispatch(initializeCells(cells)),
+      deleteCell: (id: string) => dispatch(deleteCell(id)),
+      moveCell: (id: string, direction: Direction) => dispatch(moveCell(id, direction)),
+      updateCell: (id: string, content: string) => dispatch(updateCell(id, content)),
+      insertCellAfter: (id: string | null, cellType: CellType) => dispatch(insertCellAfter(id, cellType)),
+    }),
+    [dispatch]
+  );
 };
 
 export const FileContextProvider: React.FC = (props) => {
-  const [bundles, dispatchBundles] = useReducer(
-    bundlesReducer,
-    bundlesInitialState
-  );
+  const [bundles, dispatchBundles] = useReducer(bundlesReducer, bundlesInitialState);
   const [cells, dispatchCells] = useReducer(cellsReducer, cellsInitialState);
 
   const dispatch = useCallback(
@@ -69,11 +71,7 @@ export const FileContextProvider: React.FC = (props) => {
     [bundles, cells, dispatch]
   );
 
-  return (
-    <FileContext.Provider value={memoizedValue}>
-      {props.children}
-    </FileContext.Provider>
-  );
+  return <FileContext.Provider value={memoizedValue}>{props.children}</FileContext.Provider>;
 };
 
 export default FileContext;
