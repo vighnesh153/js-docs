@@ -10,7 +10,7 @@ interface FileProps {
 
 const File: React.FC<FileProps> = (props) => {
   return (
-    <Box>
+    <Box className={'hide-scrollbar'} flexGrow={1} overflow={'auto'}>
       <CellList />
     </Box>
   );

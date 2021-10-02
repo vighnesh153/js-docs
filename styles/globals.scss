@@ -1,5 +1,7 @@
 @import "./code-editor-syntax";
 @import "./text-editor-cell";
+@import "./react-draggable";
+@import "./react-resizable";
 
 a {
   color: inherit;
@@ -22,21 +24,6 @@ a {
   }
 }
 
-.react-draggable-transparent-selection .preview-wrapper:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-}
-
-.react-draggable-transparent-selection .cell-list {
-  margin-bottom: 100vh;
-}
-
-
 .hide-scrollbar {
   scrollbar-width: none;
 
@@ -45,30 +32,7 @@ a {
   }
 }
 
-.react-resizable-handle {
-  display: block;
-  background-color: #37414b;
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-
-.resize-horizontal {
-  display: flex;
-  flex-direction: row;
-}
-
-.react-resizable-handle-s {
-  height: 10px;
-  width: 100%;
-  cursor: row-resize;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
-}
-
-.react-resizable-handle-e {
-  width: 10px;
-  min-width: 10px;
-  height: 100%;
-  cursor: col-resize;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+.debug {
+  border: 2px solid red;
 }
 
