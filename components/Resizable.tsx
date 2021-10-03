@@ -6,17 +6,13 @@ interface ResizableProps {
   initialWidthMultiplier?: number;
 }
 
-const Resizable: React.FC<ResizableProps> = ({
-  direction,
-  children,
-  ...props
-}) => {
+const Resizable: React.FC<ResizableProps> = ({ direction, children, ...props }) => {
   let resizableProps: ResizableBoxProps;
   const [innerHeight, setInnerHeight] = useState<number>(0);
   const [innerWidth, setInnerWidth] = useState<number>(0);
   const [width, setWidth] = useState<number>(0);
 
-  const initialWidthMultiplier = props.initialWidthMultiplier || 0.75;
+  const initialWidthMultiplier = props.initialWidthMultiplier || 0.7;
 
   // Initializer. As window is not defined during first render on server in NextJS (stupidity)
   useEffect(() => {
@@ -49,8 +45,8 @@ const Resizable: React.FC<ResizableProps> = ({
   if (direction === 'horizontal') {
     resizableProps = {
       className: 'resize-horizontal',
-      minConstraints: [innerWidth * 0.2, Infinity],
-      maxConstraints: [innerWidth * 0.75, Infinity],
+      minConstraints: [innerWidth * 0.1, Infinity],
+      maxConstraints: [innerWidth * 0.8, Infinity],
       height: Infinity,
       width,
       resizeHandles: ['e'],

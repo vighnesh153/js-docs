@@ -17,6 +17,10 @@
     "@mui/material": "^5.0.1",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@^5.0.0",
     "@mui/styled-engine-sc": "^5.0.0",
+    "@remirror/pm": "^1.0.3",
+    "@remirror/react": "^1.0.11",
+    "@remirror/react-editors": "^0.1.13",
+    "@remirror/styles": "^1.1.2",
     "@types/jscodeshift": "0.7.2",
     "@uiw/react-md-editor": "2.1.1",
     "axios": "^0.21.4",
@@ -32,6 +36,7 @@
     "react-dom": "^17.0.2",
     "react-resizable": "^3.0.4",
     "react-spring": "^9.2.4",
+    "remirror": "^1.0.27",
     "styled-components": "^5.3.1",
     "uuid": "^8.3.2"
   },
@@ -48,5 +53,8 @@
   },
   "resolutions": {
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@^5.0.0"
-  }
+  },
+  "browserslist": [
+    "since 2017"
+  ]
 }
