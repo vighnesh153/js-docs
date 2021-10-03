@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Resizable from 'components/Resizable';
@@ -17,6 +17,11 @@ const StyledMain = styled.main`
 `;
 
 const HomePage = () => {
+  const activeFileId = '123';
+  const [saveRequired, setSaveRequired] = useState<{ [fileId: string]: boolean }>({});
+
+  const onTabClose = (fileId: string) => {};
+
   return (
     <StyledMain>
       <Resizable direction={'horizontal'} initialWidthMultiplier={0.25}>

@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { FileContextProvider } from 'store/contexts/FileContext';
+import React, { useState } from 'react';
 
 import Tabs from 'components/Tabs';
 import File from 'components/File';
@@ -9,13 +7,13 @@ import { Box } from '@mui/system';
 interface ViewProps {}
 
 const View: React.FC<ViewProps> = (props) => {
+  const activeFileId = '123';
+
   return (
-    <FileContextProvider>
-      <Box height={'100%'} display={'flex'} flexDirection={'column'}>
-        <Tabs />
-        <File id={'123'} />
-      </Box>
-    </FileContextProvider>
+    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
+      <Tabs activeTabId={activeFileId} />
+      <File fileId={activeFileId} />
+    </Box>
   );
 };
 

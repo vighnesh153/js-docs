@@ -4,7 +4,9 @@ import { Box } from '@mui/material';
 
 import Tab from './Tab';
 
-interface TabsProps {}
+interface TabsProps {
+  activeTabId: string;
+}
 
 const Tabs: React.FC<TabsProps> = (props) => {
   return (
