@@ -5,8 +5,10 @@
     "baseUrl": ".",
     "paths": {
       "components/*": ["components/*"],
+      "contexts/*": ["contexts/*"],
       "hooks/*": ["hooks/*"],
       "models/*": ["models/*"],
+      "services/*": ["services/*"],
       "store/*": ["store/*"],
       "styles/*": ["styles/*"],
       "util/*": ["util/*"]
