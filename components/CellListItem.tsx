@@ -1,8 +1,10 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 
 import ActionsBar from 'components/ActionsBar';
 import CodeCell from 'components/CodeCell';
-// import TextEditor from 'components/TextCell';
+
+const TextCell = dynamic(() => import('components/TextCell'), { ssr: false });
 
 import Cell from 'models/Cell';
 import { Box } from '@mui/system';
@@ -32,12 +34,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   } else {
     child = (
       <React.Fragment>
-        {/*<TextEditor cell={cell} />*/}
-        <h2>Text editor goes here. Not yet able to find a good markdown editor that works fine with NextJS :(</h2>
-        <h3>
-          Editors that I like but don't work with NextJS due to css file import from node_modules bug:
-          @uiw/react-md-editor, ReMirror
-        </h3>
+        <TextCell cell={cell} />
         <ActionsBar id={cell.id} />
       </React.Fragment>
     );

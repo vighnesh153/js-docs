@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Cell from 'models/Cell';
 import { useFileContextActions } from 'store/contexts/FileContext';
 
+import MarkdownEditor, { MarkdownPreview } from 'components/MarkdownEditor';
+
 interface TextCellProps {
   cell: Cell;
 }
@@ -27,23 +29,18 @@ const TextCell: React.FC<TextCellProps> = ({ cell }) => {
     };
   }, []);
 
-  // if (editing) {
-  //   return (
-  //     <div className="text-editor" ref={ref}>
-  //       <MDEditor value={cell.content} onChange={(value) => updateCell(cell.id, value || '')} />
-  //     </div>
-  //   );
-  // }
+  if (editing) {
+    return (
+      <div className="text-editor" ref={ref}>
+        <MarkdownEditor code={cell.content} onChange={(value) => updateCell(cell.id, value)} />
+      </div>
+    );
+  }
 
   return (
     <div className="text-editor card" onClick={() => setEditing(true)}>
       <div className="card-content">
-        {/*<ThemeProvider>*/}
-        {/*  <AllStyledComponent>*/}
-        {/*    <Remirror manager={manager} initialContent={state} />*/}
-        {/*  </AllStyledComponent>*/}
-        {/*</ThemeProvider>*/}
-        {/*<MDEditor.Markdown source={cell.content || 'Click to edit'} />*/}
+        <MarkdownPreview code={cell.content || 'Click to edit'} />
       </div>
     </div>
   );
