@@ -17,6 +17,7 @@ import theme from 'util/theme';
 import Navbar from 'components/Navbar';
 
 import { JsDocsAuthProvider } from 'contexts/AuthContext';
+import { GlobalsContextProvider } from 'contexts/GlobalsContext';
 
 const App: React.FC<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -34,12 +35,14 @@ const App: React.FC<AppProps> = (props) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <JsDocsAuthProvider>
-          <div className="_app-body">
-            <Navbar />
-            <div className="main">
-              <Component {...pageProps} />
+          <GlobalsContextProvider>
+            <div className="_app-body">
+              <Navbar />
+              <div className="main">
+                <Component {...pageProps} />
+              </div>
             </div>
-          </div>
+          </GlobalsContextProvider>
         </JsDocsAuthProvider>
       </ThemeProvider>
     </React.Fragment>
