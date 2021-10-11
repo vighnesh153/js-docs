@@ -4,14 +4,15 @@ import { useSpring, animated } from 'react-spring';
 import { alpha, styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import { TransitionProps } from '@mui/material/transitions';
-import {
-  TreeView as MuiTreeView,
-  TreeItem as MuiTreeItem,
-  TreeItemProps,
-  treeItemClasses,
-} from '@mui/lab';
+import { TreeView as MuiTreeView, TreeItem as MuiTreeItem, TreeItemProps, treeItemClasses } from '@mui/lab';
 
 import { CloseSquare, MinusSquare, PlusSquare } from 'components/icons';
+
+import ExploreFile from 'models/ExploreFile';
+import ExploreDirectory from 'models/ExploreDirectory';
+import ExploreItem from 'models/ExploreItem';
+
+import constructTree from 'util/constructTree';
 
 function TransitionComponent(props: TransitionProps) {
   const style = useSpring({
@@ -32,28 +33,89 @@ function TransitionComponent(props: TransitionProps) {
   );
 }
 
-const TreeItem = styled((props: TreeItemProps) => (
-  <MuiTreeItem {...props} TransitionComponent={TransitionComponent} />
-))(({ theme }) => ({
-  [`& .${treeItemClasses.iconContainer}`]: {
-    '& .close': {
-      opacity: 0.3,
+const TreeItem = styled((props: TreeItemProps) => <MuiTreeItem {...props} TransitionComponent={TransitionComponent} />)(
+  ({ theme }) => ({
+    [`& .${treeItemClasses.iconContainer}`]: {
+      '& .close': {
+        opacity: 0.3,
+      },
     },
-  },
-  [`& .${treeItemClasses.group}`]: {
-    marginLeft: 10,
-    paddingLeft: 10,
-    borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
-  },
-  [`& .${treeItemClasses.label}`]: {
-    whiteSpace: 'nowrap',
-  },
-}));
+    [`& .${treeItemClasses.group}`]: {
+      marginLeft: 10,
+      paddingLeft: 10,
+      borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
+    },
+    [`& .${treeItemClasses.label}`]: {
+      whiteSpace: 'nowrap',
+    },
+  })
+);
 
-interface TreeViewProps
-  extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
+interface TreeViewProps extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
 
 const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
+  const items: ExploreItem[] = [
+    {
+      id: 'dir-001',
+      name: 'Dir 1',
+      type: 'directory',
+    },
+    {
+      id: 'dir-002',
+      name: 'Dir 2',
+      type: 'directory',
+    },
+    {
+      id: 'dir-004',
+      name: 'Dir 4',
+      type: 'directory',
+      parentId: 'dir-002',
+    },
+    {
+      id: 'file-004',
+      name: 'File 4',
+      type: 'file',
+      parentId: 'dir-004',
+    },
+    {
+      id: 'file-001',
+      name: 'File 1',
+      type: 'file',
+      parentId: 'dir-001',
+    },
+    {
+      id: 'file-002',
+      name: 'File 2',
+      type: 'file',
+      parentId: 'dir-002',
+    },
+    {
+      id: 'file-003',
+      name: 'File 3',
+      type: 'file',
+      parentId: 'dir-003',
+    },
+    {
+      id: 'dir-003',
+      name: 'Dir 3',
+      type: 'directory',
+    },
+  ];
+
+  const tree = constructTree(items);
+
+  const createTree = (items: (ExploreFile | ExploreDirectory)[]) => {
+    return items.map((item) =>
+      item.type === 'directory' ? (
+        <TreeItem key={item.id || ''} nodeId={item.id || ''} label={item.name}>
+          {createTree(item.content || [])}
+        </TreeItem>
+      ) : (
+        <TreeItem key={item.id || ''} nodeId={item.id || ''} label={item.name} />
+      )
+    );
+  };
+
   return (
     <MuiTreeView
       {...props}
@@ -63,37 +125,8 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
       defaultEndIcon={<CloseSquare />}
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
-      <TreeItem nodeId="1" label="Main">
-        <TreeItem nodeId="2" label="Hello" />
-        <TreeItem nodeId="3" label="Subtree with children">
-          <TreeItem nodeId="6" label="Hello" />
-          <TreeItem nodeId="7" label="Sub-subtree with children">
-            <TreeItem nodeId="9" label="Child 1" />
-            <TreeItem nodeId="10" label="Child 2" />
-            <TreeItem nodeId="11" label="Child 3" />
-            <TreeItem nodeId="12" label="Child 3">
-              <TreeItem nodeId="13" label="Child 3" />
-              <TreeItem nodeId="14" label="Child 3">
-                <TreeItem nodeId="15" label="Sub-subtree with children">
-                  <TreeItem nodeId="16" label="Sub-subtree with children" />
-                </TreeItem>
-              </TreeItem>
-            </TreeItem>
-          </TreeItem>
-          <TreeItem nodeId="8" label="Hello" />
-        </TreeItem>
-        <TreeItem nodeId="4" label="World" />
-        <TreeItem nodeId="5" label="Something something" />
-        <TreeItem nodeId="005" label="Something something" />
-        <TreeItem nodeId="015" label="Something something" />
-        <TreeItem nodeId="025" label="Something something" />
-        <TreeItem nodeId="035" label="Something something" />
-        <TreeItem nodeId="045" label="Something something" />
-        <TreeItem nodeId="055" label="Something something" />
-        <TreeItem nodeId="065" label="Something something" />
-        <TreeItem nodeId="075" label="Something something" />
-        <TreeItem nodeId="085" label="Something something" />
-      </TreeItem>
+      {createTree(tree.public)}
+      {createTree(tree.private)}
     </MuiTreeView>
   );
 };
