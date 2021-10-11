@@ -119,14 +119,18 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
   return (
     <MuiTreeView
       {...props}
-      defaultExpanded={['1']}
+      defaultExpanded={['public']}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
-      {createTree(tree.public)}
-      {createTree(tree.private)}
+      <TreeItem nodeId={'public'} label={'Public'}>
+        {createTree(tree.public)}
+      </TreeItem>
+      <TreeItem nodeId={'private'} label={'Private'}>
+        {createTree(tree.private)}
+      </TreeItem>
     </MuiTreeView>
   );
 };
