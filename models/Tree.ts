@@ -1,8 +1,8 @@
-import ExploreItem from 'models/ExploreItem';
+import ExplorerItem from 'models/ExploreItem';
 
 interface Tree {
-  private: ExploreItem[];
-  public: ExploreItem[];
+  private: ExplorerItem[];
+  public: ExplorerItem[];
 }
 
 export default Tree;

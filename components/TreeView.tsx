@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -8,9 +8,9 @@ import { TreeView as MuiTreeView, TreeItem as MuiTreeItem, TreeItemProps, treeIt
 
 import { CloseSquare, MinusSquare, PlusSquare } from 'components/icons';
 
-import ExploreFile from 'models/ExploreFile';
-import ExploreDirectory from 'models/ExploreDirectory';
-import ExploreItem from 'models/ExploreItem';
+import ExplorerItem from 'models/ExplorerItem';
+
+import GlobalsContext from 'contexts/GlobalsContext';
 
 import constructTree from 'util/constructTree';
 
@@ -54,66 +54,34 @@ const TreeItem = styled((props: TreeItemProps) => <MuiTreeItem {...props} Transi
 interface TreeViewProps extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
 
 const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
-  const items: ExploreItem[] = [
-    {
-      id: 'dir-001',
-      name: 'Dir 1',
-      type: 'directory',
-    },
-    {
-      id: 'dir-002',
-      name: 'Dir 2',
-      type: 'directory',
-    },
-    {
-      id: 'dir-004',
-      name: 'Dir 4',
-      type: 'directory',
-      parentId: 'dir-002',
-    },
-    {
-      id: 'file-004',
-      name: 'File 4',
-      type: 'file',
-      parentId: 'dir-004',
-    },
-    {
-      id: 'file-001',
-      name: 'File 1',
-      type: 'file',
-      parentId: 'dir-001',
-    },
-    {
-      id: 'file-002',
-      name: 'File 2',
-      type: 'file',
-      parentId: 'dir-002',
-    },
-    {
-      id: 'file-003',
-      name: 'File 3',
-      type: 'file',
-      parentId: 'dir-003',
-    },
-    {
-      id: 'dir-003',
-      name: 'Dir 3',
-      type: 'directory',
-    },
-  ];
+  const globalsContext = useContext(GlobalsContext);
 
-  const tree = constructTree(items);
+  const tree = useMemo(() => constructTree(globalsContext.explorerItems), [globalsContext.explorerItems]);
 
-  const createTree = (items: (ExploreFile | ExploreDirectory)[]) => {
-    return items.map((item) =>
-      item.type === 'directory' ? (
-        <TreeItem key={item.id || ''} nodeId={item.id || ''} label={item.name}>
-          {createTree(item.content || [])}
-        </TreeItem>
-      ) : (
-        <TreeItem key={item.id || ''} nodeId={item.id || ''} label={item.name} />
-      )
-    );
+  const onNodeFocus = (e: any, nodeId: string) => {
+    if (nodeId.startsWith('directory')) return;
+
+    const fileId = nodeId.split('___')[1];
+
+    if (globalsContext.focussedFileId !== fileId) {
+      globalsContext.setFocussedFileId(fileId);
+    }
+
+    if (globalsContext.openFileIds.includes(fileId)) return;
+
+    const openFileIds = [...globalsContext.openFileIds, fileId];
+    globalsContext.setOpenFileIds(openFileIds);
+  };
+
+  const createTree = (items: ExplorerItem[]) => {
+    return items.map((item) => (
+      <TreeItem
+        key={item.id || ''}
+        nodeId={`${item.type}___${item.id || ''}`}
+        label={item.name}
+        children={item.type === 'directory' ? createTree(item.content || []) : null}
+      />
+    ));
   };
 
   return (
@@ -123,6 +91,8 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
+      onNodeFocus={onNodeFocus}
+      multiSelect
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
       <TreeItem nodeId={'public'} label={'Public'}>

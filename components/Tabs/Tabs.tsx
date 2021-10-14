@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import { Box } from '@mui/material';
 
-import Tab from './Tab';
 import { useJsDocsAuth } from 'contexts/AuthContext';
+import GlobalsContext from 'contexts/GlobalsContext';
+
+import Tab from './Tab';
 
 interface TabsProps {
   activeTabId: string;
@@ -11,22 +13,19 @@ interface TabsProps {
 
 const Tabs: React.FC<TabsProps> = (props) => {
   const { isAdmin } = useJsDocsAuth();
+  const globalsContext = useContext(GlobalsContext);
+
+  const tabs = useMemo(
+    () => globalsContext.explorerItems.filter((item) => globalsContext.openFileIds.includes(item.id || '')),
+    [globalsContext.explorerItems, globalsContext.openFileIds]
+  );
 
   return (
     <Box position={'relative'} overflow={'auto'} className={'hide-scrollbar'} flexShrink={0}>
       <Box display={'flex'}>
-        <Tab id={'readme'} name={'README.md'} selected />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
-        <Tab id={'prettier'} name={'prettier.config.js'} />
+        {tabs.map((tab) => (
+          <Tab key={tab.id} id={tab.id} name={tab.name} selected={globalsContext.focussedFileId === tab.id} />
+        ))}
       </Box>
     </Box>
   );

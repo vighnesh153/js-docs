@@ -1,19 +1,20 @@
-import ExploreItem from 'models/ExploreItem';
+import ExplorerItem from 'models/ExploreItem';
 import Tree from 'models/Tree';
 
-const constructTree = (items: ExploreItem[]): Tree => {
+const constructTree = (items: ExplorerItem[]): Tree => {
   const tree: Tree = {
     public: [],
     private: [],
   };
 
-  const childItems: { [id: string]: ExploreItem[] } = {};
+  const childItems: { [id: string]: ExplorerItem[] } = {};
 
   // Segregate items in their parentId's bucket
   items.forEach((item) => {
-    if (item.parentId) {
-      childItems[item.parentId] = childItems[item.parentId] || [];
-      childItems[item.parentId].push(item);
+    if (item.parentIds.length > 0) {
+      const closestParent = item.parentIds[item.parentIds.length - 1];
+      childItems[closestParent] = childItems[closestParent] || [];
+      childItems[closestParent].push(item);
     } else {
       item.isPrivate ? tree.private.push(item) : tree.public.push(item);
     }
