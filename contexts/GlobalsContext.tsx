@@ -47,7 +47,7 @@ const GlobalsContext = React.createContext<GlobalsContextProps>({
 export default GlobalsContext;
 
 export const GlobalsContextProvider: React.FC = (props) => {
-  const [unsavedFileIds, setUnsavedFileIds] = useState<Set<string>>(new Set());
+  const [unsavedFileIds, setUnsavedFileIds] = useState<Set<string>>(new Set(['file-001']));
   const [openFileIds, setOpenFileIds] = useState<string[]>([]);
   const [explorerItems, setExplorerItems] = useState<ExplorerItem[]>([]);
   const [focussedFileId, setFocussedFileId] = useState<string | null>(null);

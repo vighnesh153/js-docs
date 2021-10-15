@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 
-import { IconButton, Typography } from '@mui/material';
+import { Badge, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-
 import CloseIcon from '@mui/icons-material/Close';
+
+import GlobalsContext from 'contexts/GlobalsContext';
 
 interface TabProps {
   id: string;
@@ -12,6 +13,17 @@ interface TabProps {
 }
 
 const Tab: React.FC<TabProps> = (props) => {
+  const globalsContext = useContext(GlobalsContext);
+
+  const saveRequired = useMemo(
+    () => globalsContext.unsavedFileIds.has(props.id),
+    [globalsContext.unsavedFileIds]
+  );
+
+  const closeTab = () => {
+    globalsContext.setOpenFileIds((fileIds) => fileIds.filter((fileId) => fileId !== props.id));
+  };
+
   return (
     <Box
       px={2}
@@ -27,14 +39,18 @@ const Tab: React.FC<TabProps> = (props) => {
       }}
       display={'flex'}
       alignItems={'center'}
-      gap={1}
+      gap={saveRequired ? 3 : 1}
     >
       <Typography variant={'body1'} component={'p'}>
         {props.name}
       </Typography>
-      <IconButton>
-        <CloseIcon />
-      </IconButton>
+      {saveRequired ? (
+        <Badge color="secondary" variant="dot" />
+      ) : (
+        <IconButton onClick={closeTab}>
+          <CloseIcon />
+        </IconButton>
+      )}
     </Box>
   );
 };
