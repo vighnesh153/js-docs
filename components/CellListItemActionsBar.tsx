@@ -6,11 +6,11 @@ import { useFileContextActions } from 'store/contexts/FileContext';
 import { IconButton } from '@mui/material';
 import { ArrowDownward, ArrowUpward, Delete } from '@mui/icons-material';
 
-interface ActionsBarProps {
+interface CellListItemActionsBarProps {
   id: string;
 }
 
-const ActionsBar: React.FC<ActionsBarProps> = ({ id }) => {
+const CellListItemActionsBar: React.FC<CellListItemActionsBarProps> = ({ id }) => {
   const { moveCell, deleteCell } = useFileContextActions();
 
   return (
@@ -40,4 +40,4 @@ const ActionsBar: React.FC<ActionsBarProps> = ({ id }) => {
   );
 };
 
-export default ActionsBar;
+export default CellListItemActionsBar;

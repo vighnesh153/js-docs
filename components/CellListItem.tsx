@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-import ActionsBar from 'components/ActionsBar';
+import CellListItemActionsBar from 'components/CellListItemActionsBar';
 import CodeCell from 'components/CodeCell';
 
 const TextCell = dynamic(() => import('components/TextCell'), { ssr: false });
@@ -26,7 +26,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
             backgroundColor: 'hsl(210, 15%, 25%)',
           }}
         >
-          <ActionsBar id={cell.id} />
+          <CellListItemActionsBar id={cell.id} />
         </Box>
         <CodeCell cell={cell} />
       </React.Fragment>
@@ -35,7 +35,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
     child = (
       <React.Fragment>
         <TextCell cell={cell} />
-        <ActionsBar id={cell.id} />
+        <CellListItemActionsBar id={cell.id} />
       </React.Fragment>
     );
   }
