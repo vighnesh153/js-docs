@@ -35,7 +35,7 @@ const HomePage = () => {
 
     modalContext.setModalData({
       title: 'I am a title',
-      content: <div style={{ width: 800, height: 400 }}>I am the child</div>,
+      content: () => <div style={{ width: 800, height: 400 }}>I am the child</div>,
     });
   }, []);
 

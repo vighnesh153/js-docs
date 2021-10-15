@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 interface ModalData {
   title: string;
-  content: React.ReactNode;
+  content: (args: { closeModal: () => void }) => React.ReactNode;
   onClose?: () => void;
 }
 
@@ -70,7 +70,7 @@ const Modal: React.FC = () => {
         </ModalTitle>
         <Divider />
         <ModalBody px={4} py={2}>
-          {modalData?.content}
+          {modalData?.content({ closeModal })}
         </ModalBody>
       </ModalContainer>
     </MuiModal>
