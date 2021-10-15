@@ -10,12 +10,16 @@ import {
   TreeItemProps,
   treeItemClasses,
 } from '@mui/lab';
+import { Box } from '@mui/system';
 
-import { CloseSquare, MinusSquare, PlusSquare } from 'components/icons';
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import FolderIcon from '@mui/icons-material/Folder';
+
+import GlobalsContext from 'contexts/GlobalsContext';
 
 import ExplorerItem from 'models/ExplorerItem';
 
-import GlobalsContext from 'contexts/GlobalsContext';
+import { MinusSquare, PlusSquare } from 'components/icons';
 
 import constructTree from 'util/constructTree';
 
@@ -56,9 +60,26 @@ const TreeItem = styled((props: TreeItemProps) => (
   },
 }));
 
-interface TreeViewProps extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
+const getRootLabel = (text: string) => (
+  <Box display={'flex'} alignItems={'center'} gap={1} py={0.2}>
+    <FolderIcon />
+    <span>{text}</span>
+  </Box>
+);
 
-const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
+const getLabel = (item: ExplorerItem): React.ReactNode => {
+  return (
+    <Box display={'flex'} alignItems={'center'} gap={1} py={0.2}>
+      {item.type === 'file' ? <InsertDriveFileOutlinedIcon /> : <FolderIcon />}
+      <span>{item.name}</span>
+    </Box>
+  );
+};
+
+const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> = ({
+  selected,
+  ...props
+}) => {
   const globalsContext = useContext(GlobalsContext);
 
   const tree = useMemo(
@@ -105,7 +126,8 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
       <TreeItem
         key={item.id || ''}
         nodeId={`${item.type}___${item.id || ''}`}
-        label={item.name}
+        // label={item.name}
+        label={getLabel(item)}
         children={item.type === 'directory' ? createTree(item.content || []) : null}
       />
     ));
@@ -117,15 +139,15 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
       defaultExpanded={['public']}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
-      defaultEndIcon={<CloseSquare />}
+      defaultEndIcon={null}
       onNodeFocus={onNodeFocus}
       multiSelect
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
-      <TreeItem nodeId={'directory___public'} label={'Public'}>
+      <TreeItem nodeId={'directory___public'} label={getRootLabel('Public')}>
         {createTree(tree.public)}
       </TreeItem>
-      <TreeItem nodeId={'directory___private'} label={'Private'}>
+      <TreeItem nodeId={'directory___private'} label={getRootLabel('Private')}>
         {createTree(tree.private)}
       </TreeItem>
     </MuiTreeView>
