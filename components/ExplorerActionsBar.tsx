@@ -7,6 +7,8 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+import useCreateExplorerItem from 'hooks/useCreateExplorerItem';
+
 enum Action {
   EditName = 'edit_name',
   NewFolder = 'new_folder',
@@ -15,6 +17,8 @@ enum Action {
 }
 
 const ExplorerActionsBar: React.FC = (props) => {
+  const { createExplorerItem } = useCreateExplorerItem();
+
   const iconStyles: SxProps<Theme> = {
     '&:hover': {
       color: 'secondary.main',
@@ -22,7 +26,17 @@ const ExplorerActionsBar: React.FC = (props) => {
   };
 
   const onClickIcon = (action: Action) => {
-    console.log(action);
+    switch (action) {
+      case Action.NewFile:
+      case Action.NewFolder:
+        const type = action === Action.NewFolder ? 'directory' : 'file';
+        createExplorerItem({ type });
+        break;
+      case Action.EditName:
+        break;
+      case Action.Refresh:
+        break;
+    }
   };
 
   return (

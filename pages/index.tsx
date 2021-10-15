@@ -8,7 +8,6 @@ import View from 'components/View';
 import ExplorerItem from 'models/ExplorerItem';
 
 import GlobalsContext from 'contexts/GlobalsContext';
-import { ModalContext } from 'components/Modal';
 
 const StyledMain = styled.main`
   display: flex;
@@ -23,7 +22,6 @@ const StyledMain = styled.main`
 
 const HomePage = () => {
   const globalsContext = useContext(GlobalsContext);
-  const modalContext = useContext(ModalContext);
 
   const activeFileId = '123';
   const [saveRequired, setSaveRequired] = useState<{ [fileId: string]: boolean }>({});
@@ -32,11 +30,6 @@ const HomePage = () => {
 
   useEffect(() => {
     globalsContext.setExplorerItems(items);
-
-    modalContext.setModalData({
-      title: 'I am a title',
-      content: () => <div style={{ width: 800, height: 400 }}>I am the child</div>,
-    });
   }, []);
 
   return (

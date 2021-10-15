@@ -4,7 +4,12 @@ import { useSpring, animated } from 'react-spring';
 import { alpha, styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import { TransitionProps } from '@mui/material/transitions';
-import { TreeView as MuiTreeView, TreeItem as MuiTreeItem, TreeItemProps, treeItemClasses } from '@mui/lab';
+import {
+  TreeView as MuiTreeView,
+  TreeItem as MuiTreeItem,
+  TreeItemProps,
+  treeItemClasses,
+} from '@mui/lab';
 
 import { CloseSquare, MinusSquare, PlusSquare } from 'components/icons';
 
@@ -33,43 +38,65 @@ function TransitionComponent(props: TransitionProps) {
   );
 }
 
-const TreeItem = styled((props: TreeItemProps) => <MuiTreeItem {...props} TransitionComponent={TransitionComponent} />)(
-  ({ theme }) => ({
-    [`& .${treeItemClasses.iconContainer}`]: {
-      '& .close': {
-        opacity: 0.3,
-      },
+const TreeItem = styled((props: TreeItemProps) => (
+  <MuiTreeItem {...props} TransitionComponent={TransitionComponent} />
+))(({ theme }) => ({
+  [`& .${treeItemClasses.iconContainer}`]: {
+    '& .close': {
+      opacity: 0.3,
     },
-    [`& .${treeItemClasses.group}`]: {
-      marginLeft: 10,
-      paddingLeft: 10,
-      borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
-    },
-    [`& .${treeItemClasses.label}`]: {
-      whiteSpace: 'nowrap',
-    },
-  })
-);
+  },
+  [`& .${treeItemClasses.group}`]: {
+    marginLeft: 10,
+    paddingLeft: 10,
+    borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
+  },
+  [`& .${treeItemClasses.label}`]: {
+    whiteSpace: 'nowrap',
+  },
+}));
 
 interface TreeViewProps extends Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'> {}
 
 const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
   const globalsContext = useContext(GlobalsContext);
 
-  const tree = useMemo(() => constructTree(globalsContext.explorerItems), [globalsContext.explorerItems]);
+  const tree = useMemo(
+    () => constructTree(globalsContext.explorerItems),
+    [globalsContext.explorerItems]
+  );
 
   const onNodeFocus = (e: any, nodeId: string) => {
-    if (nodeId.startsWith('directory')) return;
+    const [nodeType, itemId] = nodeId.split('___');
 
-    const fileId = nodeId.split('___')[1];
-
-    if (globalsContext.focussedFileId !== fileId) {
-      globalsContext.setFocussedFileId(fileId);
+    /**
+     * Set the current focussed node id
+     */
+    if (globalsContext.focussedNodeId !== itemId) {
+      globalsContext.setFocussedNodeId(itemId);
     }
 
-    if (globalsContext.openFileIds.includes(fileId)) return;
+    /**
+     * If node is directory, return
+     */
+    if (nodeType === 'directory') return;
 
-    const openFileIds = [...globalsContext.openFileIds, fileId];
+    /**
+     * set the current focussed file id
+     */
+    if (globalsContext.focussedFileId !== itemId) {
+      globalsContext.setFocussedFileId(itemId);
+    }
+
+    /**
+     * If file already open, do nothing
+     */
+    if (globalsContext.openFileIds.includes(itemId)) return;
+
+    /**
+     * If file not open, add it to the openFileIds list
+     */
+    const openFileIds = [...globalsContext.openFileIds, itemId];
     globalsContext.setOpenFileIds(openFileIds);
   };
 
@@ -95,10 +122,10 @@ const TreeView: React.FC<TreeViewProps> = ({ selected, ...props }) => {
       multiSelect
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
-      <TreeItem nodeId={'public'} label={'Public'}>
+      <TreeItem nodeId={'directory___public'} label={'Public'}>
         {createTree(tree.public)}
       </TreeItem>
-      <TreeItem nodeId={'private'} label={'Private'}>
+      <TreeItem nodeId={'directory___private'} label={'Private'}>
         {createTree(tree.private)}
       </TreeItem>
     </MuiTreeView>
