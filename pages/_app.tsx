@@ -18,6 +18,7 @@ import Navbar from 'components/Navbar';
 
 import { JsDocsAuthProvider } from 'contexts/AuthContext';
 import { GlobalsContextProvider } from 'contexts/GlobalsContext';
+import Modal, { ModalProvider } from 'components/Modal';
 
 const App: React.FC<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -29,19 +30,25 @@ const App: React.FC<AppProps> = (props) => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         {/* PWA primary color */}
         <meta content={theme.palette.primary.main} name="theme-color" />
-        <meta name="description" content="A simple notes and documentation storing site for my personal needs." />
+        <meta
+          name="description"
+          content="A simple notes and documentation storing site for my personal needs."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <JsDocsAuthProvider>
           <GlobalsContextProvider>
-            <div className="_app-body">
-              <Navbar />
-              <div className="main">
-                <Component {...pageProps} />
+            <ModalProvider>
+              <Modal />
+              <div className="_app-body">
+                <Navbar />
+                <div className="main">
+                  <Component {...pageProps} />
+                </div>
               </div>
-            </div>
+            </ModalProvider>
           </GlobalsContextProvider>
         </JsDocsAuthProvider>
       </ThemeProvider>
