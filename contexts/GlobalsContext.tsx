@@ -1,7 +1,3 @@
-/**
- * @author Vighnesh Raut <rvighnes@amazon.com>
- */
-
 import React, { useMemo, useState } from 'react';
 import ExplorerItem from 'models/ExplorerItem';
 
