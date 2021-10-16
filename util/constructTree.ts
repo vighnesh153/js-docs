@@ -1,5 +1,20 @@
-import ExplorerItem from 'models/ExploreItem';
+import ExplorerItem from 'models/ExplorerItem';
 import Tree from 'models/Tree';
+
+/**
+ * Sorts the children
+ */
+const sortedChildren = (children: ExplorerItem[]): ExplorerItem[] => {
+  const childrenCopy = [...children];
+  return childrenCopy.sort((child1, child2) => {
+    // Both are either "directory" or "file"
+    if (child1.type === child2.type) return child1.name.localeCompare(child2.name);
+
+    // 1 of them is "directory" and the other 1 is "file"
+    if (child1.type === 'directory') return -1;
+    return 1;
+  });
+};
 
 const constructTree = (items: ExplorerItem[]): Tree => {
   const tree: Tree = {
@@ -23,7 +38,7 @@ const constructTree = (items: ExplorerItem[]): Tree => {
   // Assign the parent's bucket to the parent
   items.forEach((item) => {
     if (item.type === 'directory') {
-      item.content = childItems[item.id || ''] || [];
+      item.content = sortedChildren(childItems[item.id || ''] || []);
     }
   });
 

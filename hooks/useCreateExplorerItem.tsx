@@ -43,6 +43,64 @@ const useCreateExplorerItem = () => {
   const { focussedNodeId, explorerItems, setExplorerItems } = useContext(GlobalsContext);
   const { setModalData } = useContext(ModalContext);
 
+  /**
+   * This function adds an item to the ExplorerItems list with the given name
+   */
+  const addItemToList = useCallback(
+    (args: { type: ExplorerItemType; itemName: string; closeModal: () => void }) => {
+      args.closeModal();
+
+      /**
+       * Item definition
+       */
+      const childItem: ExplorerItem = {
+        id: uuid(),
+        name: args.itemName,
+        type: args.type,
+        parentIds: [],
+        isPrivate: false,
+      };
+
+      if (focussedNodeId === 'public') {
+        /**
+         * If parent is `public`, do nothing
+         */
+      } else if (focussedNodeId === 'private') {
+        /**
+         * If parent is `private`, set isPrivate to true
+         */
+        childItem.isPrivate = true;
+      } else {
+        /**
+         * Get the actual parent ExplorerItem
+         */
+        const parentExplorerItem = explorerItems.find(
+          (item) => item.id === focussedNodeId
+        ) as ExplorerItem;
+
+        /**
+         * The child's isPrivate status will be the same as the parent.
+         */
+        childItem.isPrivate = parentExplorerItem.isPrivate;
+
+        /**
+         * Set the parent directories of the child based on its parent
+         */
+        if (parentExplorerItem.type === 'directory') {
+          childItem.parentIds = [...parentExplorerItem.parentIds, parentExplorerItem.id];
+        } else {
+          childItem.parentIds = [...parentExplorerItem.parentIds];
+        }
+      }
+
+      /**
+       * Finally, add the child item to explorerItems array
+       */
+      setExplorerItems((items) => [...items, childItem]);
+    },
+    [focussedNodeId, explorerItems, setExplorerItems]
+  );
+
   const createExplorerItem = useCallback(
     (args: CreateExplorerItemProps) => {
       setModalData({
@@ -50,62 +108,18 @@ const useCreateExplorerItem = () => {
         content: ({ closeModal }) => (
           <CreateExplorerItem
             type={args.type}
-            onConfirm={(itemName: string) => {
-              closeModal();
-
-              /**
-               * Item definition
-               */
-              const childItem: ExplorerItem = {
-                id: uuid(),
-                name: itemName,
+            onConfirm={(itemName: string) =>
+              addItemToList({
+                itemName,
+                closeModal,
                 type: args.type,
-                parentIds: [],
-                isPrivate: false,
-              };
-
-              if (focussedNodeId === 'public') {
-                /**
-                 * If parent is `public`, do nothing
-                 */
-              } else if (focussedNodeId === 'private') {
-                /**
-                 * If parent is `private`, set isPrivate to true
-                 */
-                childItem.isPrivate = true;
-              } else {
-                /**
-                 * Get the actual parent ExplorerItem
-                 */
-                const parentExplorerItem = explorerItems.find(
-                  (item) => item.id === focussedNodeId
-                ) as ExplorerItem;
-
-                /**
-                 * The child's isPrivate status will be the same as the parent.
-                 */
-                childItem.isPrivate = parentExplorerItem.isPrivate;
-
-                /**
-                 * Set the parent directories of the child based on its parent
-                 */
-                if (parentExplorerItem.type === 'directory') {
-                  childItem.parentIds = [...parentExplorerItem.parentIds, parentExplorerItem.id];
-                } else {
-                  childItem.parentIds = [...parentExplorerItem.parentIds];
-                }
-              }
-
-              /**
-               * Finally, add the child item to explorerItems array
-               */
-              setExplorerItems((items) => [...items, childItem]);
-            }}
+              })
+            }
           />
         ),
       });
     },
-    [setModalData, focussedNodeId, explorerItems, setExplorerItems]
+    [setModalData, addItemToList]
   );
 
   return { createExplorerItem };

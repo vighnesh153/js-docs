@@ -126,7 +126,6 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
       <TreeItem
         key={item.id || ''}
         nodeId={`${item.type}___${item.id || ''}`}
-        // label={item.name}
         label={getLabel(item)}
         children={item.type === 'directory' ? createTree(item.content || []) : null}
       />
