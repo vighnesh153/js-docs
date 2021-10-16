@@ -79,7 +79,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
   selected,
   ...props
 }) => {
-  usePopulateTreeView();
+  usePopulateTreeView({ fetchOnMount: true });
   const globalsContext = useContext(GlobalsContext);
 
   const tree = useMemo(

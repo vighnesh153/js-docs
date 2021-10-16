@@ -9,6 +9,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 import useCreateExplorerItem from 'hooks/useCreateExplorerItem';
 import useEditExplorerItemName from 'hooks/useEditExplorerItemName';
+import usePopulateTreeView from 'hooks/tree-view/usePopulateTreeView';
 
 enum Action {
   EditName = 'edit_name',
@@ -18,6 +19,7 @@ enum Action {
 }
 
 const ExplorerActionsBar: React.FC = () => {
+  const { fetchAndPopulateTree } = usePopulateTreeView();
   const { createExplorerItem } = useCreateExplorerItem();
   const { editExplorerItemName } = useEditExplorerItemName();
 
@@ -38,6 +40,7 @@ const ExplorerActionsBar: React.FC = () => {
         editExplorerItemName();
         break;
       case Action.Refresh:
+        fetchAndPopulateTree({ showSuccessBanner: true });
         break;
     }
   };
