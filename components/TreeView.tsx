@@ -18,7 +18,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import GlobalsContext from 'contexts/GlobalsContext';
 import ExplorerItem from 'models/ExplorerItem';
 import constructTree from 'util/constructTree';
-import usePopulateTreeView from 'hooks/tree-view/usePopulateTreeView';
+import usePopulateTreeView from 'hooks/usePopulateTreeView';
 
 import { MinusSquare, PlusSquare } from 'components/icons';
 
@@ -83,7 +83,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
   const globalsContext = useContext(GlobalsContext);
 
   const tree = useMemo(
-    () => constructTree(globalsContext.explorerItems),
+    () => constructTree(globalsContext.explorerItems.filter((item) => !item.deletedOn)),
     [globalsContext.explorerItems]
   );
 

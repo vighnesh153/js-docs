@@ -8,6 +8,7 @@ import View from 'components/View';
 import ExplorerItem from 'models/ExplorerItem';
 
 import GlobalsContext from 'contexts/GlobalsContext';
+import useConfirmation from 'hooks/useConfirmation';
 
 const StyledMain = styled.main`
   display: flex;
@@ -22,6 +23,7 @@ const StyledMain = styled.main`
 
 const HomePage = () => {
   const globalsContext = useContext(GlobalsContext);
+  const { confirmation } = useConfirmation();
 
   const activeFileId = '123';
   const [saveRequired, setSaveRequired] = useState<{ [fileId: string]: boolean }>({});
@@ -30,6 +32,11 @@ const HomePage = () => {
 
   useEffect(() => {
     globalsContext.setExplorerItems(items);
+    confirmation({
+      title: 'Please',
+      message: 'Are you sure you want to do this?',
+      onConfirm: () => null,
+    });
   }, []);
 
   return (

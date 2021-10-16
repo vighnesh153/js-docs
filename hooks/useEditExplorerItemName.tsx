@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { setDoc, doc } from 'firebase/firestore';
 
 import { Box } from '@mui/system';
 import { TextField } from '@mui/material';
@@ -9,11 +8,8 @@ import ExplorerItem from 'models/ExplorerItem';
 import GlobalsContext from 'contexts/GlobalsContext';
 import JsDocsAuthContext from 'contexts/AuthContext';
 
-import configuration from 'constants/configuration';
-import { firebase } from 'services/firebase';
-
 import { ModalContext } from 'components/Modal';
-import { toast } from 'react-toastify';
+import useUpdateExplorerItem from 'hooks/useUpdateExplorerItem';
 
 type ExplorerItemType = 'file' | 'directory';
 
@@ -46,9 +42,10 @@ const EditExplorerItemName: React.FC<EditExplorerItemNameProps> = (props) => {
 };
 
 const useEditExplorerItemName = () => {
-  const { focussedNodeId, explorerItems, setExplorerItems } = useContext(GlobalsContext);
+  const { focussedNodeId, explorerItems } = useContext(GlobalsContext);
   const { currentUser } = useContext(JsDocsAuthContext);
   const { setModalData } = useContext(ModalContext);
+  const { updateExplorerItem } = useUpdateExplorerItem();
 
   /**
    * This function edits the item name in the ExplorerItems list
@@ -76,31 +73,9 @@ const useEditExplorerItemName = () => {
         updatedBy: currentUser?.email || '',
       });
 
-      const { FILE_META, PRIVATE } = configuration.FIREBASE.FIRESTORE.COLLECTIONS;
-      const docRef = updatedExplorerItem.isPrivate
-        ? doc(firebase.db, PRIVATE, FILE_META, updatedExplorerItem.id)
-        : doc(firebase.db, FILE_META, updatedExplorerItem.id);
-
-      /**
-       * Update the doc in firestore
-       */
-      setDoc(docRef, updatedExplorerItem, { merge: true })
-        .then(() => {
-          /**
-           * If firestore update succeeds, update in the context
-           */
-          setExplorerItems(
-            explorerItems.map((explorerItem) =>
-              explorerItem.id === focussedNodeId ? updatedExplorerItem : explorerItem
-            )
-          );
-        })
-        .catch((e) => {
-          console.error(e);
-          toast.error('Failed to update the name. Check the console for more info.');
-        });
+      updateExplorerItem(updatedExplorerItem);
     },
-    [focussedNodeId, explorerItems, setExplorerItems, currentUser]
+    [focussedNodeId, explorerItems, updateExplorerItem, currentUser]
   );
 
   const editExplorerItemName = useCallback(() => {
