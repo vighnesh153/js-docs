@@ -14,11 +14,7 @@ const _File: React.FC<FileProps> = (props) => {
   // This updates the global unsaved files array
   useGlobalUnsavedFilesUpdater({ fileId: props.fileId });
 
-  return (
-    <Box className={'hide-scrollbar'} flexGrow={1} overflow={'auto'}>
-      <CellList />
-    </Box>
-  );
+  return <CellList />;
 };
 
 const File: React.FC<FileProps> = (props) => (
