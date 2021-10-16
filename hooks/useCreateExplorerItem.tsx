@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import { addDoc, collection, setDoc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 import { Box } from '@mui/system';
 import { TextField } from '@mui/material';
@@ -7,6 +8,10 @@ import { TextField } from '@mui/material';
 import ExplorerItem from 'models/ExplorerItem';
 
 import GlobalsContext from 'contexts/GlobalsContext';
+import JsDocsAuthContext from 'contexts/AuthContext';
+
+import { firebase } from 'services/firebase';
+import configuration from 'constants/configuration';
 
 import { ModalContext } from 'components/Modal';
 
@@ -41,6 +46,7 @@ const CreateExplorerItem: React.FC<CreateExplorerItemProps> = (props) => {
 
 const useCreateExplorerItem = () => {
   const { focussedNodeId, explorerItems, setExplorerItems } = useContext(GlobalsContext);
+  const { currentUser } = useContext(JsDocsAuthContext);
   const { setModalData } = useContext(ModalContext);
 
   /**
@@ -54,11 +60,15 @@ const useCreateExplorerItem = () => {
        * Item definition
        */
       const childItem: ExplorerItem = {
-        id: uuid(),
+        id: '',
         name: args.itemName,
         type: args.type,
         parentIds: [],
         isPrivate: false,
+        createdOn: new Date().toString(),
+        createdBy: currentUser?.email || '',
+        updatedOn: new Date().toString(),
+        updatedBy: currentUser?.email || '',
       };
 
       if (focussedNodeId === 'public') {
@@ -93,12 +103,34 @@ const useCreateExplorerItem = () => {
         }
       }
 
+      const { FILE_META, PRIVATE } = configuration.FIREBASE.FIRESTORE.COLLECTIONS;
+      const collectionObj = childItem.isPrivate
+        ? collection(firebase.db, PRIVATE, FILE_META)
+        : collection(firebase.db, FILE_META);
+
       /**
-       * Finally, add the child item to explorerItems array
+       * Add the doc to firestore
        */
-      setExplorerItems((items) => [...items, childItem]);
+      addDoc(collectionObj, childItem)
+        .then((ref) => {
+          childItem.id = ref.id;
+
+          /**
+           * Finally, add the child item to explorerItems array
+           */
+          setExplorerItems((items) => [...items, childItem]);
+
+          /**
+           * Update the doc in firestore with the id
+           */
+          setDoc(ref, { id: ref.id }, { merge: true });
+        })
+        .catch((e) => {
+          console.error(e);
+          toast.error('Failed to create the explorer item. Check console for the error.');
+        });
     },
-    [focussedNodeId, explorerItems, setExplorerItems]
+    [focussedNodeId, explorerItems, setExplorerItems, currentUser]
   );
 
   const createExplorerItem = useCallback(

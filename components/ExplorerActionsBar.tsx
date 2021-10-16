@@ -17,7 +17,7 @@ enum Action {
   Refresh = 'refresh',
 }
 
-const ExplorerActionsBar: React.FC = (props) => {
+const ExplorerActionsBar: React.FC = () => {
   const { createExplorerItem } = useCreateExplorerItem();
   const { editExplorerItemName } = useEditExplorerItemName();
 

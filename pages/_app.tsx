@@ -10,6 +10,9 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import 'styles/globals.scss';
 
 import theme from 'util/theme';
@@ -42,6 +45,18 @@ const App: React.FC<AppProps> = (props) => {
           <GlobalsContextProvider>
             <ModalProvider>
               <Modal />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                theme={'colored'}
+                draggable
+                pauseOnHover
+              />
               <div className="_app-body">
                 <Navbar />
                 <div className="main">

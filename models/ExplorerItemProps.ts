@@ -2,12 +2,12 @@ interface ExplorerItemProps {
   id: string;
   name: string;
 
-  createdOn?: number;
+  createdOn?: string;
   createdBy?: string;
-  updatedOn?: number;
+  updatedOn?: string;
   updatedBy?: string;
-  deletedOn?: number | null;
-  deletedBy?: string | null;
+  deletedOn?: string;
+  deletedBy?: string;
 
   /**
    * ['src', 'components', 'common'] means src > components > common > File

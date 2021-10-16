@@ -2,6 +2,7 @@
 import { initializeApp } from 'firebase/app';
 
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 import { googleProvider } from './firebaseAuth';
 
@@ -16,11 +17,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 const firebase = {
-  auth: getAuth(),
+  auth: getAuth(firebaseApp),
   authProvider: googleProvider,
+  db: getFirestore(firebaseApp),
 };
 
 export { firebase };

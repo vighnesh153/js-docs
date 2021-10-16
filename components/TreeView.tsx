@@ -16,12 +16,11 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 import FolderIcon from '@mui/icons-material/Folder';
 
 import GlobalsContext from 'contexts/GlobalsContext';
-
 import ExplorerItem from 'models/ExplorerItem';
+import constructTree from 'util/constructTree';
+import usePopulateTreeView from 'hooks/tree-view/usePopulateTreeView';
 
 import { MinusSquare, PlusSquare } from 'components/icons';
-
-import constructTree from 'util/constructTree';
 
 function TransitionComponent(props: TransitionProps) {
   const style = useSpring({
@@ -80,6 +79,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
   selected,
   ...props
 }) => {
+  usePopulateTreeView();
   const globalsContext = useContext(GlobalsContext);
 
   const tree = useMemo(
@@ -125,7 +125,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
     return items.map((item) => (
       <TreeItem
         key={item.id || ''}
-        nodeId={`${item.type}___${item.id || ''}`}
+        nodeId={`${item.type}___${item.id || ''}`} // This prefix is being used in onNodeFocus function
         label={getLabel(item)}
         children={item.type === 'directory' ? createTree(item.content || []) : null}
       />
