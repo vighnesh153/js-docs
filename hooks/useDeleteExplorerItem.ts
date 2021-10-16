@@ -30,13 +30,49 @@ const useDeleteExplorerItem = () => {
       deletedBy: currentUser?.email || '',
     });
 
+    /**
+     * updates the firestore doc and the context
+     */
     updateExplorerItem(deletedExplorerItem);
+
+    /**
+     * Reset the focussedNodeId
+     */
     setFocussedNodeId(null);
-    setOpenFileIds((fileIds) => fileIds.filter((fileId) => fileId !== focussedNodeId));
+
+    /**
+     * Id -> item, mapping
+     */
+    const itemLookup: { [k: string]: ExplorerItem } = explorerItems.reduce((prev: any, current) => {
+      prev[current.id] = current;
+      return prev;
+    }, {});
+
+    /**
+     * Close itself, if a file, and all the children of the item, if any.
+     */
+    setOpenFileIds((fileIds) =>
+      fileIds.filter((fileId) => {
+        if (fileId === focussedNodeId) return false; // This was deleted
+        if (itemLookup[fileId].parentIds.includes(focussedNodeId || '')) return false; // Its ancestor was deleted;
+        return true;
+      })
+    );
+
+    /**
+     * Discard any changes in the deleted files.
+     */
     setUnsavedFileIds((fileIds) => {
       if (fileIds.has(focussedNodeId || '')) {
-        const newFileIds = new Set(Array.from(fileIds));
-        newFileIds.delete(focussedNodeId || '');
+        const newFileIds = new Set<string>();
+        Array.from(fileIds).forEach((fileId) => {
+          /**
+           * If the file's parent is not being deleted currently, then don't reset the unsaved status of it.
+           */
+          if (itemLookup[fileId].parentIds.includes(focussedNodeId || '') === false) {
+            newFileIds.add(fileId);
+          }
+        });
         return newFileIds;
       }
       return fileIds;
