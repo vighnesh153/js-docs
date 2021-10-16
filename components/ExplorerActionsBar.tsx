@@ -8,6 +8,7 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import useCreateExplorerItem from 'hooks/useCreateExplorerItem';
+import useEditExplorerItemName from 'hooks/useEditExplorerItemName';
 
 enum Action {
   EditName = 'edit_name',
@@ -18,6 +19,7 @@ enum Action {
 
 const ExplorerActionsBar: React.FC = (props) => {
   const { createExplorerItem } = useCreateExplorerItem();
+  const { editExplorerItemName } = useEditExplorerItemName();
 
   const iconStyles: SxProps<Theme> = {
     '&:hover': {
@@ -33,6 +35,7 @@ const ExplorerActionsBar: React.FC = (props) => {
         createExplorerItem({ type });
         break;
       case Action.EditName:
+        editExplorerItemName();
         break;
       case Action.Refresh:
         break;
