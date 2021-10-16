@@ -6,8 +6,14 @@ import ExplorerItem from 'models/ExplorerItem';
 import useUpdateExplorerItem from 'hooks/useUpdateExplorerItem';
 
 const useDeleteExplorerItem = () => {
-  const { focussedNodeId, explorerItems, setFocussedNodeId, setOpenFileIds, setUnsavedFileIds } =
-    useContext(GlobalsContext);
+  const {
+    focussedNodeId,
+    explorerItems,
+    setFocussedNodeId,
+    setOpenFileIds,
+    setUnsavedFileIds,
+    setFocussedFileId,
+  } = useContext(GlobalsContext);
   const { currentUser } = useContext(JsDocsAuthContext);
   const { updateExplorerItem } = useUpdateExplorerItem();
 
@@ -36,9 +42,10 @@ const useDeleteExplorerItem = () => {
     updateExplorerItem(deletedExplorerItem);
 
     /**
-     * Reset the focussedNodeId
+     * Reset the focussedNodeId and focussedFileId
      */
     setFocussedNodeId(null);
+    setFocussedFileId(null);
 
     /**
      * Id -> item, mapping
@@ -85,6 +92,7 @@ const useDeleteExplorerItem = () => {
     setFocussedNodeId,
     setOpenFileIds,
     setUnsavedFileIds,
+    setFocussedFileId,
   ]);
 
   return { deleteExplorerItem };
