@@ -7,8 +7,12 @@ import GlobalsContext from 'contexts/GlobalsContext';
 import Tabs from 'components/Tabs';
 import File from 'components/File';
 
+import useWarnUserForUnsavedChanges from 'hooks/useWarnUserForUnsavedChanges';
+
 const View: React.FC = (props) => {
   const globalContext = useContext(GlobalsContext);
+
+  useWarnUserForUnsavedChanges();
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
