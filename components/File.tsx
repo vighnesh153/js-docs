@@ -8,6 +8,7 @@ import useGlobalUnsavedFilesUpdater from 'hooks/useGlobalUnsavedFilesUpdater';
 
 interface FileProps {
   fileId: string;
+  isPrivate: boolean;
 }
 
 const _File: React.FC<FileProps> = (props) => {

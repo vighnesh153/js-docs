@@ -46,7 +46,7 @@ const Tab: React.FC<TabProps> = (props) => {
     // To prevent invoking the `onClickTab` function
     e.stopPropagation();
 
-    globalsContext.setOpenFileIds((fileIds) => fileIds.filter((fileId) => fileId !== props.id));
+    globalsContext.setOpenFiles((files) => files.filter((file) => file.id !== props.id));
   };
 
   return (

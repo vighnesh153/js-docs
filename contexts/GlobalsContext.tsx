@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ExplorerItem from 'models/ExplorerItem';
 
-type FocussedFile = {
+type AppFile = {
   id: string;
   isPrivate: boolean;
 };
@@ -16,8 +16,8 @@ interface GlobalsContextProps {
   /**
    * To track all the open files in tabs
    */
-  openFileIds: string[];
-  setOpenFileIds: React.Dispatch<React.SetStateAction<string[]>>;
+  openFiles: AppFile[];
+  setOpenFiles: React.Dispatch<React.SetStateAction<AppFile[]>>;
 
   /**
    * File/Directory meta information
@@ -34,8 +34,8 @@ interface GlobalsContextProps {
   /**
    * File under focus (Used to decide which file is active in the view)
    */
-  focussedFile: FocussedFile | null;
-  setFocussedFile: React.Dispatch<React.SetStateAction<FocussedFile | null>>;
+  focussedFile: AppFile | null;
+  setFocussedFile: React.Dispatch<React.SetStateAction<AppFile | null>>;
 
   /**
    * Focussed node id (Used to decide on what node, the ExplorerActions, should act upon
@@ -48,8 +48,8 @@ const GlobalsContext = React.createContext<GlobalsContextProps>({
   unsavedFileIds: new Set(),
   setUnsavedFileIds: () => null,
 
-  openFileIds: [],
-  setOpenFileIds: () => null,
+  openFiles: [],
+  setOpenFiles: () => null,
 
   explorerItems: [],
   setExplorerItems: () => null,
@@ -67,14 +67,14 @@ export default GlobalsContext;
 
 export const GlobalsContextProvider: React.FC = (props) => {
   const [unsavedFileIds, setUnsavedFileIds] = useState<Set<string>>(new Set());
-  const [openFileIds, setOpenFileIds] = useState<string[]>([]);
+  const [openFiles, setOpenFiles] = useState<AppFile[]>([]);
   const [explorerItems, setExplorerItems] = useState<ExplorerItem[]>([]);
   const [expandedExplorerItemIds, setExpandedExplorerItemIds] = useState<string[]>([]);
-  const [focussedFile, setFocussedFile] = useState<FocussedFile | null>(null);
+  const [focussedFile, setFocussedFile] = useState<AppFile | null>(null);
   const [focussedNodeId, setFocussedNodeId] = useState<string | null>(null);
 
   const onFocussedFileChange = useCallback(
-    (focussedFile: FocussedFile | null) => {
+    (focussedFile: AppFile | null) => {
       // No file focussed yet
       if (!focussedFile) return;
 
@@ -108,8 +108,8 @@ export const GlobalsContextProvider: React.FC = (props) => {
       unsavedFileIds,
       setUnsavedFileIds,
 
-      openFileIds,
-      setOpenFileIds,
+      openFiles,
+      setOpenFiles,
 
       explorerItems,
       setExplorerItems,
@@ -125,7 +125,7 @@ export const GlobalsContextProvider: React.FC = (props) => {
     }),
     [
       unsavedFileIds,
-      openFileIds,
+      openFiles,
       explorerItems,
       expandedExplorerItemIds,
       focussedFile,

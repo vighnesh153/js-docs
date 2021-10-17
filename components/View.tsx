@@ -13,16 +13,16 @@ const View: React.FC = (props) => {
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <Tabs />
-      {globalContext.openFileIds.length === 0 && props.children}
-      {globalContext.openFileIds.map((fileId) => (
+      {props.children}
+      {globalContext.openFiles.map((file) => (
         <Box
-          key={fileId}
-          display={globalContext.focussedFile?.id === fileId ? 'block' : 'none'}
+          key={file.id}
+          display={globalContext.focussedFile?.id === file.id ? 'block' : 'none'}
           className={'hide-scrollbar'}
           flexGrow={1}
           overflow={'auto'}
         >
-          <File fileId={fileId} />
+          <File fileId={file.id} isPrivate={file.isPrivate} />
         </Box>
       ))}
     </Box>

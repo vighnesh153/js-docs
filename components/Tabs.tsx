@@ -13,9 +13,9 @@ const Tabs: React.FC = (props) => {
   const tabs = useMemo(
     () =>
       globalsContext.explorerItems.filter((item) =>
-        globalsContext.openFileIds.includes(item.id || '')
+        globalsContext.openFiles.map((file) => file.id).includes(item.id || '')
       ),
-    [globalsContext.explorerItems, globalsContext.openFileIds]
+    [globalsContext.explorerItems, globalsContext.openFiles]
   );
 
   return (

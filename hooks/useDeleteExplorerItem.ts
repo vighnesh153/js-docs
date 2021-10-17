@@ -10,7 +10,7 @@ const useDeleteExplorerItem = () => {
     focussedNodeId,
     explorerItems,
     setFocussedNodeId,
-    setOpenFileIds,
+    setOpenFiles,
     setUnsavedFileIds,
     setFocussedFile,
   } = useContext(GlobalsContext);
@@ -58,10 +58,10 @@ const useDeleteExplorerItem = () => {
     /**
      * Close itself, if a file, and all the children of the item, if any.
      */
-    setOpenFileIds((fileIds) =>
-      fileIds.filter((fileId) => {
-        if (fileId === focussedNodeId) return false; // This was deleted
-        if (itemLookup[fileId].parentIds.includes(focussedNodeId || '')) return false; // Its ancestor was deleted;
+    setOpenFiles((files) =>
+      files.filter((file) => {
+        if (file.id === focussedNodeId) return false; // This was deleted
+        if (itemLookup[file.id].parentIds.includes(focussedNodeId || '')) return false; // Its ancestor was deleted;
         return true;
       })
     );
@@ -84,16 +84,7 @@ const useDeleteExplorerItem = () => {
       }
       return fileIds;
     });
-  }, [
-    focussedNodeId,
-    explorerItems,
-    currentUser,
-    updateExplorerItem,
-    setFocussedNodeId,
-    setOpenFileIds,
-    setUnsavedFileIds,
-    setFocussedFile,
-  ]);
+  }, [focussedNodeId, explorerItems, currentUser, updateExplorerItem]);
 
   return { deleteExplorerItem };
 };

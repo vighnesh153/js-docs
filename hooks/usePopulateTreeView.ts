@@ -35,22 +35,30 @@ const usePopulateTreeView = (props?: Props) => {
       /**
        * Fetch from firebase
        */
-      Promise.all(promises).then((responses) => {
-        const explorerItems: ExplorerItem[] = [];
-
-        responses.forEach((response) => {
-          response.docs.forEach((doc) => explorerItems.push(doc.data() as ExplorerItem));
-        });
-
-        /**
-         * Set the fetched items in context
-         */
-        globalsContext.setExplorerItems(explorerItems);
-
-        if (args?.showSuccessBanner) {
-          toast.success('Refresh successful.');
-        }
+      const toastId = toast.dark('Fetching explorer... Hang on', {
+        isLoading: true,
+        autoClose: false,
       });
+      Promise.all(promises)
+        .then((responses) => {
+          const explorerItems: ExplorerItem[] = [];
+
+          responses.forEach((response) => {
+            response.docs.forEach((doc) => explorerItems.push(doc.data() as ExplorerItem));
+          });
+
+          /**
+           * Set the fetched items in context
+           */
+          globalsContext.setExplorerItems(explorerItems);
+
+          if (args?.showSuccessBanner) {
+            toast.success('Refresh successful.');
+          }
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
+        });
     },
     [isAdmin, globalsContext.setExplorerItems]
   );

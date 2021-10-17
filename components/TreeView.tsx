@@ -103,25 +103,32 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
     if (nodeType === 'directory') return;
 
     /**
+     * Find the explorerItem
+     */
+    const explorerItem = globalsContext.explorerItems.find(
+      (item) => item.id === itemId
+    ) as ExplorerItem;
+
+    /**
      * set the current focussed file
      */
     if (globalsContext.focussedFile?.id !== itemId) {
-      const explorerItem = globalsContext.explorerItems.find(
-        (item) => item.id === itemId
-      ) as ExplorerItem;
       globalsContext.setFocussedFile({ id: itemId, isPrivate: Boolean(explorerItem.isPrivate) });
     }
 
     /**
      * If file already open, do nothing
      */
-    if (globalsContext.openFileIds.includes(itemId)) return;
+    if (globalsContext.openFiles.map((file) => file.id).includes(itemId)) return;
 
     /**
-     * If file not open, add it to the openFileIds list
+     * If file not open, add it to the openFiles list
      */
-    const openFileIds = [...globalsContext.openFileIds, itemId];
-    globalsContext.setOpenFileIds(openFileIds);
+    const openFiles = [
+      ...globalsContext.openFiles,
+      { id: itemId, isPrivate: Boolean(explorerItem.isPrivate) },
+    ];
+    globalsContext.setOpenFiles(openFiles);
   };
 
   const onNodeToggle = (e: any, nodeIds: string[]) => {
