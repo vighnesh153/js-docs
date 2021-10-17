@@ -1,4 +1,5 @@
 import React, { useContext, useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 import { Badge, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -15,6 +16,7 @@ interface TabProps {
 
 const Tab: React.FC<TabProps> = (props) => {
   const globalsContext = useContext(GlobalsContext);
+  const router = useRouter();
 
   const saveRequired = useMemo(
     () => globalsContext.unsavedFileIds.has(props.id),
@@ -25,21 +27,13 @@ const Tab: React.FC<TabProps> = (props) => {
     const tabId = props.id;
 
     /**
-     * Set the tab as focussedNode
+     * Find the actual explorerItem
      */
-    if (globalsContext.focussedNodeId !== tabId) {
-      globalsContext.setFocussedNodeId(tabId);
-    }
+    const explorerItem = globalsContext.explorerItems.find(
+      (item) => item.id === tabId
+    ) as ExplorerItem;
 
-    /**
-     * Set the tab as focussedFile
-     */
-    if (globalsContext.focussedFile?.id !== tabId) {
-      const explorerItem = globalsContext.explorerItems.find(
-        (item) => item.id === tabId
-      ) as ExplorerItem;
-      globalsContext.setFocussedFile({ id: tabId, isPrivate: Boolean(explorerItem.isPrivate) });
-    }
+    router.push(`/${explorerItem.isPrivate ? 'private' : 'public'}/${tabId}`);
   };
 
   const closeTab: React.MouseEventHandler<HTMLButtonElement> = (e) => {

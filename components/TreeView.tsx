@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
+import { useRouter } from 'next/router';
 
 import { alpha, styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
@@ -81,6 +82,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
 }) => {
   usePopulateTreeView({ fetchOnMount: true });
   const globalsContext = useContext(GlobalsContext);
+  const router = useRouter();
 
   const tree = useMemo(
     () => constructTree(globalsContext.explorerItems.filter((item) => !item.deletedOn)),
@@ -109,26 +111,7 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
       (item) => item.id === itemId
     ) as ExplorerItem;
 
-    /**
-     * set the current focussed file
-     */
-    if (globalsContext.focussedFile?.id !== itemId) {
-      globalsContext.setFocussedFile({ id: itemId, isPrivate: Boolean(explorerItem.isPrivate) });
-    }
-
-    /**
-     * If file already open, do nothing
-     */
-    if (globalsContext.openFiles.map((file) => file.id).includes(itemId)) return;
-
-    /**
-     * If file not open, add it to the openFiles list
-     */
-    const openFiles = [
-      ...globalsContext.openFiles,
-      { id: itemId, isPrivate: Boolean(explorerItem.isPrivate) },
-    ];
-    globalsContext.setOpenFiles(openFiles);
+    router.push(`/${explorerItem.isPrivate ? 'private' : 'public'}/${itemId}`);
   };
 
   const onNodeToggle = (e: any, nodeIds: string[]) => {

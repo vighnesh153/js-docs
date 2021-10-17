@@ -81,10 +81,11 @@ const App: React.FC<AppProps> = (props) => {
                       <Explorer />
                     </Resizable>
                     <div className="viewer">
-                      <View />
+                      <View>
+                        <Component {...pageProps} />
+                      </View>
                     </div>
                   </StyledMain>
-                  <Component {...pageProps} />
                 </div>
               </div>
             </ModalProvider>

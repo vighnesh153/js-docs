@@ -14,21 +14,29 @@ const View: React.FC = (props) => {
 
   useWarnUserForUnsavedChanges();
 
+  const hasExplorerItems = Boolean(globalContext.explorerItems.length > 0);
+
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
-      <Tabs />
-      {props.children}
-      {globalContext.openFiles.map((file) => (
-        <Box
-          key={file.id}
-          display={globalContext.focussedFile?.id === file.id ? 'block' : 'none'}
-          className={'hide-scrollbar'}
-          flexGrow={1}
-          overflow={'auto'}
-        >
-          <File fileId={file.id} isPrivate={file.isPrivate} />
-        </Box>
-      ))}
+      {hasExplorerItems === false && '...'}
+
+      {hasExplorerItems && (
+        <React.Fragment>
+          <Tabs />
+          {props.children}
+          {globalContext.openFiles.map((file) => (
+            <Box
+              key={file.id}
+              display={globalContext.focussedFile?.id === file.id ? 'block' : 'none'}
+              className={'hide-scrollbar'}
+              flexGrow={1}
+              overflow={'auto'}
+            >
+              <File fileId={file.id} isPrivate={file.isPrivate} />
+            </Box>
+          ))}
+        </React.Fragment>
+      )}
     </Box>
   );
 };
