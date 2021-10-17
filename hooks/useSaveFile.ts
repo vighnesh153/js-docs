@@ -71,7 +71,7 @@ const useSaveFile = (props: Props) => {
           toast.dismiss(loadingToastId);
         });
     },
-    [cells.saveRequired, explorerItems]
+    [cells.saveRequired, explorerItems, cells.data]
   );
 };
 

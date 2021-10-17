@@ -40,8 +40,6 @@ const useFetchFile = (props: FetchFileArgs) => {
     // Fetch from firestore
     getDoc(doc(firebase.db, `${collectionPathPrefix}${FILES}`, args.fileId))
       .then((res) => {
-        toast.success(`${explorerItem.name} fetched successfully.`);
-
         // Store the fetched cells in the store
         const { data } = (res.data() || {}) as any;
         initializeCells(Object.keys(data || []).map((key) => Cell.deserialize(data[key])));
