@@ -1,6 +1,7 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import styled from 'styled-components';
 
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,7 +22,22 @@ import Navbar from 'components/Navbar';
 
 import { JsDocsAuthProvider } from 'contexts/AuthContext';
 import { GlobalsContextProvider } from 'contexts/GlobalsContext';
+
 import Modal, { ModalProvider } from 'components/Modal';
+import Resizable from 'components/Resizable';
+import Explorer from 'components/Explorer';
+import View from 'components/View';
+
+const StyledMain = styled.main`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .viewer {
+    flex: 1;
+    min-width: 0;
+  }
+`;
 
 const App: React.FC<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -60,6 +76,14 @@ const App: React.FC<AppProps> = (props) => {
               <div className="_app-body">
                 <Navbar />
                 <div className="main">
+                  <StyledMain>
+                    <Resizable direction={'horizontal'} initialWidthMultiplier={0.25}>
+                      <Explorer />
+                    </Resizable>
+                    <div className="viewer">
+                      <View />
+                    </div>
+                  </StyledMain>
                   <Component {...pageProps} />
                 </div>
               </div>

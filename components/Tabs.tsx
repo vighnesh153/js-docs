@@ -7,12 +7,7 @@ import GlobalsContext from 'contexts/GlobalsContext';
 
 import Tab from './Tab';
 
-interface TabsProps {
-  activeTabId: string;
-}
-
-const Tabs: React.FC<TabsProps> = (props) => {
-  const { isAdmin } = useJsDocsAuth();
+const Tabs: React.FC = (props) => {
   const globalsContext = useContext(GlobalsContext);
 
   const tabs = useMemo(
@@ -42,7 +37,7 @@ const Tabs: React.FC<TabsProps> = (props) => {
             key={tab.id}
             id={tab.id}
             name={tab.name}
-            selected={globalsContext.focussedFileId === tab.id}
+            selected={globalsContext.focussedFile?.id === tab.id}
           />
         ))}
       </Box>

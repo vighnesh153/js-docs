@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ExplorerItem from 'models/ExplorerItem';
 
+type FocussedFile = {
+  id: string;
+  isPrivate: boolean;
+};
+
 interface GlobalsContextProps {
   /**
    * To track  all the unsaved files
@@ -27,10 +32,10 @@ interface GlobalsContextProps {
   setExpandedExplorerItemIds: React.Dispatch<React.SetStateAction<string[]>>;
 
   /**
-   * File under focus (Used to decide which file is active in the view
+   * File under focus (Used to decide which file is active in the view)
    */
-  focussedFileId: string | null;
-  setFocussedFileId: React.Dispatch<React.SetStateAction<string | null>>;
+  focussedFile: FocussedFile | null;
+  setFocussedFile: React.Dispatch<React.SetStateAction<FocussedFile | null>>;
 
   /**
    * Focussed node id (Used to decide on what node, the ExplorerActions, should act upon
@@ -52,8 +57,8 @@ const GlobalsContext = React.createContext<GlobalsContextProps>({
   expandedExplorerItemIds: [],
   setExpandedExplorerItemIds: () => null,
 
-  focussedFileId: null,
-  setFocussedFileId: () => null,
+  focussedFile: null,
+  setFocussedFile: () => null,
 
   focussedNodeId: null,
   setFocussedNodeId: () => null,
@@ -65,17 +70,17 @@ export const GlobalsContextProvider: React.FC = (props) => {
   const [openFileIds, setOpenFileIds] = useState<string[]>([]);
   const [explorerItems, setExplorerItems] = useState<ExplorerItem[]>([]);
   const [expandedExplorerItemIds, setExpandedExplorerItemIds] = useState<string[]>([]);
-  const [focussedFileId, setFocussedFileId] = useState<string | null>(null);
+  const [focussedFile, setFocussedFile] = useState<FocussedFile | null>(null);
   const [focussedNodeId, setFocussedNodeId] = useState<string | null>(null);
 
   const onFocussedFileChange = useCallback(
-    (focussedFileId: string | null) => {
+    (focussedFile: FocussedFile | null) => {
       // No file focussed yet
-      if (!focussedFileId) return;
+      if (!focussedFile) return;
 
       // Find the focussed file
       const explorerItem = explorerItems.find(
-        (explorerItem) => explorerItem.id === focussedFileId
+        (explorerItem) => explorerItem.id === focussedFile.id
       ) as ExplorerItem;
 
       // Convert the existing expanded nodes to set for ease of access
@@ -95,8 +100,8 @@ export const GlobalsContextProvider: React.FC = (props) => {
 
   // Do something whenever the focussed file id changes.
   useEffect(() => {
-    onFocussedFileChange(focussedFileId);
-  }, [focussedFileId]);
+    onFocussedFileChange(focussedFile);
+  }, [focussedFile]);
 
   const value = useMemo<GlobalsContextProps>(
     () => ({
@@ -112,8 +117,8 @@ export const GlobalsContextProvider: React.FC = (props) => {
       expandedExplorerItemIds,
       setExpandedExplorerItemIds,
 
-      focussedFileId,
-      setFocussedFileId,
+      focussedFile,
+      setFocussedFile,
 
       focussedNodeId,
       setFocussedNodeId,
@@ -123,7 +128,7 @@ export const GlobalsContextProvider: React.FC = (props) => {
       openFileIds,
       explorerItems,
       expandedExplorerItemIds,
-      focussedFileId,
+      focussedFile,
       focussedNodeId,
     ]
   );

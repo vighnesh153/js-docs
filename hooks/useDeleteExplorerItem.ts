@@ -12,7 +12,7 @@ const useDeleteExplorerItem = () => {
     setFocussedNodeId,
     setOpenFileIds,
     setUnsavedFileIds,
-    setFocussedFileId,
+    setFocussedFile,
   } = useContext(GlobalsContext);
   const { currentUser } = useContext(JsDocsAuthContext);
   const { updateExplorerItem } = useUpdateExplorerItem();
@@ -42,10 +42,10 @@ const useDeleteExplorerItem = () => {
     updateExplorerItem(deletedExplorerItem);
 
     /**
-     * Reset the focussedNodeId and focussedFileId
+     * Reset the focussedNodeId and focussedFile
      */
     setFocussedNodeId(null);
-    setFocussedFileId(null);
+    setFocussedFile(null);
 
     /**
      * Id -> item, mapping
@@ -92,7 +92,7 @@ const useDeleteExplorerItem = () => {
     setFocussedNodeId,
     setOpenFileIds,
     setUnsavedFileIds,
-    setFocussedFileId,
+    setFocussedFile,
   ]);
 
   return { deleteExplorerItem };

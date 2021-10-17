@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 
 import GlobalsContext from 'contexts/GlobalsContext';
+import ExplorerItem from 'models/ExplorerItem';
 
 interface TabProps {
   id: string;
@@ -33,8 +34,11 @@ const Tab: React.FC<TabProps> = (props) => {
     /**
      * Set the tab as focussedFile
      */
-    if (globalsContext.focussedFileId !== tabId) {
-      globalsContext.setFocussedFileId(tabId);
+    if (globalsContext.focussedFile?.id !== tabId) {
+      const explorerItem = globalsContext.explorerItems.find(
+        (item) => item.id === tabId
+      ) as ExplorerItem;
+      globalsContext.setFocussedFile({ id: tabId, isPrivate: Boolean(explorerItem.isPrivate) });
     }
   };
 

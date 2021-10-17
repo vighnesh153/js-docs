@@ -103,10 +103,13 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
     if (nodeType === 'directory') return;
 
     /**
-     * set the current focussed file id
+     * set the current focussed file
      */
-    if (globalsContext.focussedFileId !== itemId) {
-      globalsContext.setFocussedFileId(itemId);
+    if (globalsContext.focussedFile?.id !== itemId) {
+      const explorerItem = globalsContext.explorerItems.find(
+        (item) => item.id === itemId
+      ) as ExplorerItem;
+      globalsContext.setFocussedFile({ id: itemId, isPrivate: Boolean(explorerItem.isPrivate) });
     }
 
     /**
@@ -155,7 +158,9 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
       selected={
         globalsContext.focussedNodeId
           ? `${
-              globalsContext.focussedNodeId === globalsContext.focussedFileId ? 'file' : 'directory'
+              globalsContext.focussedNodeId === globalsContext.focussedFile?.id
+                ? 'file'
+                : 'directory'
             }___${globalsContext.focussedNodeId}`
           : 'directory___public'
       }
