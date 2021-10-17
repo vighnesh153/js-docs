@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Box } from '@mui/system';
+import { LinearProgress } from '@mui/material';
 
 import CellList from 'components/CellList';
 import { FileContextProvider } from 'store/contexts/FileContext';
@@ -7,7 +9,6 @@ import { FileContextProvider } from 'store/contexts/FileContext';
 import useGlobalUnsavedFilesUpdater from 'hooks/useGlobalUnsavedFilesUpdater';
 import useSaveFile from 'hooks/useSaveFile';
 import useFetchFile from 'hooks/useFetchFile';
-import { LinearProgress } from '@mui/material';
 
 interface FileProps {
   fileId: string;
