@@ -36,9 +36,14 @@ export interface UpdateCellAction {
   };
 }
 
+export interface FileSavedSuccessfully {
+  type: ActionType.FILE_SAVED_SUCCESSFULLY;
+}
+
 export type CellsActions =
   | InitializeCellsAction
   | MoveCellAction
   | DeleteCellAction
   | InsertCellAfterAction
-  | UpdateCellAction;
+  | UpdateCellAction
+  | FileSavedSuccessfully;

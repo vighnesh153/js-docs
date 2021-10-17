@@ -26,7 +26,9 @@ const cellsReducerFunc: Reducer<CellsState, Actions> = (state = cellsInitialStat
       state.data = {};
 
       state.order = action.payload.map((rawCell) => rawCell.id);
-      action.payload.map(Cell.deserialize).forEach((cell) => (state.data[cell.id] = cell));
+      action.payload.map(Cell.deserialize).forEach((cell) => {
+        state.data[cell.id] = cell;
+      });
 
       break;
     case ActionType.UPDATE_CELL:
@@ -69,6 +71,10 @@ const cellsReducerFunc: Reducer<CellsState, Actions> = (state = cellsInitialStat
       } else {
         state.order.splice(foundIndex + 1, 0, cell.id);
       }
+
+      break;
+    case ActionType.FILE_SAVED_SUCCESSFULLY:
+      state.saveRequired = false;
 
       break;
     default:

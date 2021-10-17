@@ -14,6 +14,7 @@ const configuration = {
     FIRESTORE: {
       COLLECTIONS: {
         FILE_META: 'file-meta',
+        FILES: 'files',
         PRIVATE: 'private/vighnesh', // 2 segments are required as prefix because firebase requires odd number of segments
       },
     },

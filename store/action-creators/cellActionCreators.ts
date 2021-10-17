@@ -2,6 +2,7 @@ import { CellType, ICell } from 'models/Cell';
 import {
   DeleteCellAction,
   Direction,
+  FileSavedSuccessfully,
   InitializeCellsAction,
   InsertCellAfterAction,
   MoveCellAction,
@@ -43,15 +44,18 @@ export const moveCell = (id: string, direction: Direction): MoveCellAction => {
   };
 };
 
-export const insertCellAfter = (
-  id: string | null,
-  cellType: CellType
-): InsertCellAfterAction => {
+export const insertCellAfter = (id: string | null, cellType: CellType): InsertCellAfterAction => {
   return {
     type: ActionType.INSERT_CELL_AFTER,
     payload: {
       id,
       type: cellType,
     },
+  };
+};
+
+export const fileSavedSuccessfully = (): FileSavedSuccessfully => {
+  return {
+    type: ActionType.FILE_SAVED_SUCCESSFULLY,
   };
 };

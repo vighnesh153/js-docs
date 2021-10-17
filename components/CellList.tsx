@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import { Box } from '@mui/system';
 
@@ -14,10 +14,6 @@ const CellList: React.FC = () => {
     const { order, data } = fileContext.cells;
     return order.map((id) => data[id]);
   }, [fileContext.cells]);
-
-  useEffect(() => {
-    // fetchCells();
-  }, []);
 
   const renderedCells = cells.map((cell) => (
     <React.Fragment key={cell.id}>

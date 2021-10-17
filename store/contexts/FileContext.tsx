@@ -16,6 +16,7 @@ import {
   deleteCell,
   insertCellAfter,
   updateCell,
+  fileSavedSuccessfully,
 } from 'store/action-creators';
 import { CellType, ICell } from 'models/Cell';
 
@@ -44,7 +45,9 @@ export const useFileContextActions = () => {
       deleteCell: (id: string) => dispatch(deleteCell(id)),
       moveCell: (id: string, direction: Direction) => dispatch(moveCell(id, direction)),
       updateCell: (id: string, content: string) => dispatch(updateCell(id, content)),
-      insertCellAfter: (id: string | null, cellType: CellType) => dispatch(insertCellAfter(id, cellType)),
+      insertCellAfter: (id: string | null, cellType: CellType) =>
+        dispatch(insertCellAfter(id, cellType)),
+      fileSavedSuccessfully: () => dispatch(fileSavedSuccessfully()),
     }),
     [dispatch]
   );
