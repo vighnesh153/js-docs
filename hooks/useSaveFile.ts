@@ -44,10 +44,7 @@ const useSaveFile = (props: Props) => {
       });
 
       // Serialize the payload
-      const payload: any = { ...cells.data };
-      for (const key of Object.keys(payload)) {
-        payload[key] = payload[key].serialize();
-      }
+      const payload = cells.order.map((cellId) => cells.data[cellId].serialize());
 
       // Save in firestore
       setDoc(
@@ -71,7 +68,7 @@ const useSaveFile = (props: Props) => {
           toast.dismiss(loadingToastId);
         });
     },
-    [cells.saveRequired, explorerItems, cells.data]
+    [cells.saveRequired, explorerItems, cells.data, cells.order]
   );
 };
 

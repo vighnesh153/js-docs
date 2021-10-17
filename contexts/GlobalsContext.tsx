@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import ExplorerItem from 'models/ExplorerItem';
-import useOnFocussedFileChange from 'hooks/useOnFocussedFileChange';
 
 export type AppFile = {
   id: string;
@@ -73,9 +72,6 @@ export const GlobalsContextProvider: React.FC = (props) => {
   const [expandedExplorerItemIds, setExpandedExplorerItemIds] = useState<string[]>([]);
   const [focussedFile, setFocussedFile] = useState<AppFile | null>(null);
   const [focussedNodeId, setFocussedNodeId] = useState<string | null>(null);
-
-  // For acting on the focussedFileChange event
-  useOnFocussedFileChange();
 
   const value = useMemo<GlobalsContextProps>(
     () => ({

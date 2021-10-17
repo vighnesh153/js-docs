@@ -8,7 +8,7 @@ import GlobalsContext from 'contexts/GlobalsContext';
 import { useFileContextActions } from 'store/contexts/FileContext';
 
 import ExplorerItem from 'models/ExplorerItem';
-import Cell from 'models/Cell';
+import Cell, { ICell } from 'models/Cell';
 
 interface FetchFileArgs {
   fileId: string;
@@ -41,8 +41,8 @@ const useFetchFile = (props: FetchFileArgs) => {
     getDoc(doc(firebase.db, `${collectionPathPrefix}${FILES}`, args.fileId))
       .then((res) => {
         // Store the fetched cells in the store
-        const { data } = (res.data() || {}) as any;
-        initializeCells(Object.keys(data || []).map((key) => Cell.deserialize(data[key])));
+        const { data } = (res.data() || []) as any;
+        initializeCells((data || []).map((cell: ICell) => Cell.deserialize(cell)));
       })
       .catch((err) => {
         console.error(err);
