@@ -92,17 +92,19 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
   const onNodeFocus = (e: any, nodeId: string) => {
     const [nodeType, itemId] = nodeId.split('___');
 
-    /**
-     * Set the current focussed node id
-     */
-    if (globalsContext.focussedNodeId !== itemId) {
-      globalsContext.setFocussedNodeId(itemId);
-    }
+    // This is because it is a un-focus call
+    if (itemId === globalsContext.focussedNodeId) return;
 
-    /**
-     * If node is directory, return
-     */
-    if (nodeType === 'directory') return;
+    if (nodeType === 'directory') {
+      /**
+       * Set the current focussed node id. Doing this in if statement because on route change,
+       * that will happen for file.
+       */
+      if (globalsContext.focussedNodeId !== itemId) {
+        globalsContext.setFocussedNodeId(itemId);
+      }
+      return;
+    }
 
     /**
      * Find the explorerItem
