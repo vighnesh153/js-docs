@@ -2,9 +2,11 @@ import React, { useContext, useMemo } from 'react';
 // import { useRouter } from 'next/router';
 
 import GlobalsContext from 'contexts/GlobalsContext';
+import JsDocsAuthContext from 'contexts/AuthContext';
 
 const useWarnUserForUnsavedChanges = () => {
   const globalContext = useContext(GlobalsContext);
+  const { isAdmin } = useContext(JsDocsAuthContext);
   // const router = useRouter();
   const saveRequired = useMemo(
     () => globalContext.unsavedFileIds.size > 0,
@@ -29,7 +31,7 @@ const useWarnUserForUnsavedChanges = () => {
     //   }
     // };
 
-    if (saveRequired) {
+    if (isAdmin && saveRequired) {
       window.addEventListener('beforeunload', beforeUnloadHandler);
       // router.events.on('routeChangeStart', beforeRouteHandler);  // For route changes
     } else {
@@ -40,7 +42,7 @@ const useWarnUserForUnsavedChanges = () => {
       window.removeEventListener('beforeunload', beforeUnloadHandler);
       // router.events.off('routeChangeStart', beforeRouteHandler); // For route changes
     };
-  }, [saveRequired]);
+  }, [saveRequired, isAdmin]);
 };
 
 export default useWarnUserForUnsavedChanges;
