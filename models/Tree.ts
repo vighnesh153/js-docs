@@ -1,4 +1,4 @@
-import ExplorerItem from 'models/ExploreItem';
+import ExplorerItem from 'models/ExplorerItem';
 
 interface Tree {
   private: ExplorerItem[];
