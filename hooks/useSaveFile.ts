@@ -5,9 +5,11 @@ import { doc, setDoc } from 'firebase/firestore';
 
 import { firebase } from 'services/firebase';
 import ExplorerItem from 'models/ExplorerItem';
+
 import FileContext, { useFileContextActions } from 'store/contexts/FileContext';
 import GlobalsContext from 'contexts/GlobalsContext';
 import configuration from 'constants/configuration';
+import JsDocsAuthContext from 'contexts/AuthContext';
 
 interface Props {
   fileId: string;
@@ -16,6 +18,7 @@ interface Props {
 
 const useSaveFile = (props: Props) => {
   const { explorerItems } = useContext(GlobalsContext);
+  const { isAdmin } = useContext(JsDocsAuthContext);
   const { fileSavedSuccessfully } = useFileContextActions();
   const { cells } = useContext(FileContext);
 
@@ -27,6 +30,15 @@ const useSaveFile = (props: Props) => {
 
       // Ignore the event if the file doesn't require saving
       if (cells.saveRequired === false) return;
+
+      // Throw error if not admin
+      if (isAdmin === false) {
+        toast.error(
+          'Sorry only Vighnesh can save stuff. Allowing you to edit just as a playground.',
+          { autoClose: 10 * 1000 }
+        );
+        return;
+      }
 
       // Fetch the corresponding explorer item
       const explorerItem = explorerItems.find(
@@ -68,7 +80,7 @@ const useSaveFile = (props: Props) => {
           toast.dismiss(loadingToastId);
         });
     },
-    [cells.saveRequired, explorerItems, cells.data, cells.order]
+    [cells.saveRequired, explorerItems, cells.data, cells.order, isAdmin]
   );
 };
 

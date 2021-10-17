@@ -1,6 +1,6 @@
 const configuration = {
   // If updating admin emails here, update in the firestore.rules too
-  ADMIN_EMAILS: ['me@vighnesh153.com', 'vighnesh.raut13@gmail.com', 'vighnesh.raut133@gmail.com'],
+  ADMIN_EMAILS: ['me@vighnesh153.com', 'vighnesh.raut13@gmail.com'],
   FIREBASE: {
     CONFIG: {
       apiKey: 'AIzaSyAeYODLnJxZK9MYDCW9gL-dWXZUTysEvHE',

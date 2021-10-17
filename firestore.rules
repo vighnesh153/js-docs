@@ -22,7 +22,7 @@ service cloud.firestore {
 
         function isAdmin() {
             // If updating admin emails here, update in the constants/configuration too
-            let adminEmails = ["vighnesh.raut13@gmail.com", "me@vighnesh153.com", "vighnesh.raut133@gmail.com"];
+            let adminEmails = ["vighnesh.raut13@gmail.com", "me@vighnesh153.com"];
             let userEmail = request.auth.token.email;
             return isLoggedIn() && userEmail in adminEmails;
         }
