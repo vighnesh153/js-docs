@@ -7,6 +7,7 @@ import { FileContextProvider } from 'store/contexts/FileContext';
 import useGlobalUnsavedFilesUpdater from 'hooks/useGlobalUnsavedFilesUpdater';
 import useSaveFile from 'hooks/useSaveFile';
 import useFetchFile from 'hooks/useFetchFile';
+import { LinearProgress } from '@mui/material';
 
 interface FileProps {
   fileId: string;
@@ -24,7 +25,11 @@ const _File: React.FC<FileProps> = (props) => {
   useSaveFile(props);
 
   if (loading) {
-    return <Box>Loading...</Box>;
+    return (
+      <Box p={2}>
+        <LinearProgress />
+      </Box>
+    );
   }
 
   return <CellList />;
