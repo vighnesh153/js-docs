@@ -111,6 +111,10 @@ const useCreateExplorerItem = () => {
       /**
        * Add the doc to firestore
        */
+      const toastId = toast.dark('Creating new item', {
+        autoClose: false,
+        isLoading: true,
+      });
       addDoc(collectionObj, childItem)
         .then((ref) => {
           childItem.id = ref.id;
@@ -128,6 +132,9 @@ const useCreateExplorerItem = () => {
         .catch((e) => {
           console.error(e);
           toast.error('Failed to create the explorer item. Check console for the error.');
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
         });
     },
     [focussedNodeId, explorerItems, setExplorerItems, currentUser]

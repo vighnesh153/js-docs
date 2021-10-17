@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -121,6 +121,10 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
     globalsContext.setOpenFileIds(openFileIds);
   };
 
+  const onNodeToggle = (e: any, nodeIds: string[]) => {
+    globalsContext.setExpandedExplorerItemIds([...nodeIds]);
+  };
+
   const createTree = (items: ExplorerItem[]) => {
     return items.map((item) => (
       <TreeItem
@@ -132,15 +136,29 @@ const TreeView: React.FC<Omit<React.HTMLProps<HTMLUListElement>, 'as' | 'ref'>> 
     ));
   };
 
+  /**
+   * Expand the public directory by default
+   */
+  useEffect(() => {
+    globalsContext.setExpandedExplorerItemIds(['directory___public']);
+  }, []);
+
   return (
     <MuiTreeView
       {...props}
-      defaultExpanded={['public']}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={null}
+      expanded={globalsContext.expandedExplorerItemIds}
       onNodeFocus={onNodeFocus}
-      multiSelect
+      onNodeToggle={onNodeToggle}
+      selected={
+        globalsContext.focussedNodeId
+          ? `${
+              globalsContext.focussedNodeId === globalsContext.focussedFileId ? 'file' : 'directory'
+            }___${globalsContext.focussedNodeId}`
+          : 'directory___public'
+      }
       sx={{ flexGrow: 1, overflowY: 'auto' }}
     >
       <TreeItem nodeId={'directory___public'} label={getRootLabel('Public')}>

@@ -62,7 +62,7 @@ const usePopulateTreeView = (props?: Props) => {
     if (props?.fetchOnMount) {
       fetchAndPopulateTree();
     }
-  }, []);
+  }, [fetchAndPopulateTree]);
 
   return { fetchAndPopulateTree };
 };

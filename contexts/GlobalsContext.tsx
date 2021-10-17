@@ -21,6 +21,12 @@ interface GlobalsContextProps {
   setExplorerItems: React.Dispatch<React.SetStateAction<ExplorerItem[]>>;
 
   /**
+   * Ids of the explorerItems that are expanded
+   */
+  expandedExplorerItemIds: string[];
+  setExpandedExplorerItemIds: React.Dispatch<React.SetStateAction<string[]>>;
+
+  /**
    * File under focus (Used to decide which file is active in the view
    */
   focussedFileId: string | null;
@@ -43,6 +49,9 @@ const GlobalsContext = React.createContext<GlobalsContextProps>({
   explorerItems: [],
   setExplorerItems: () => null,
 
+  expandedExplorerItemIds: [],
+  setExpandedExplorerItemIds: () => null,
+
   focussedFileId: null,
   setFocussedFileId: () => null,
 
@@ -55,6 +64,7 @@ export const GlobalsContextProvider: React.FC = (props) => {
   const [unsavedFileIds, setUnsavedFileIds] = useState<Set<string>>(new Set());
   const [openFileIds, setOpenFileIds] = useState<string[]>([]);
   const [explorerItems, setExplorerItems] = useState<ExplorerItem[]>([]);
+  const [expandedExplorerItemIds, setExpandedExplorerItemIds] = useState<string[]>([]);
   const [focussedFileId, setFocussedFileId] = useState<string | null>(null);
   const [focussedNodeId, setFocussedNodeId] = useState<string | null>(null);
 
@@ -69,13 +79,23 @@ export const GlobalsContextProvider: React.FC = (props) => {
       explorerItems,
       setExplorerItems,
 
+      expandedExplorerItemIds,
+      setExpandedExplorerItemIds,
+
       focussedFileId,
       setFocussedFileId,
 
       focussedNodeId,
       setFocussedNodeId,
     }),
-    [unsavedFileIds, openFileIds, explorerItems, focussedFileId, focussedNodeId]
+    [
+      unsavedFileIds,
+      openFileIds,
+      explorerItems,
+      expandedExplorerItemIds,
+      focussedFileId,
+      focussedNodeId,
+    ]
   );
 
   return <GlobalsContext.Provider value={value}>{props.children}</GlobalsContext.Provider>;

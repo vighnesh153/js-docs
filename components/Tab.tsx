@@ -20,7 +20,28 @@ const Tab: React.FC<TabProps> = (props) => {
     [globalsContext.unsavedFileIds]
   );
 
-  const closeTab = () => {
+  const onClickTab = () => {
+    const tabId = props.id;
+
+    /**
+     * Set the tab as focussedNode
+     */
+    if (globalsContext.focussedNodeId !== tabId) {
+      globalsContext.setFocussedNodeId(tabId);
+    }
+
+    /**
+     * Set the tab as focussedFile
+     */
+    if (globalsContext.focussedFileId !== tabId) {
+      globalsContext.setFocussedFileId(tabId);
+    }
+  };
+
+  const closeTab: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    // To prevent invoking the `onClickTab` function
+    e.stopPropagation();
+
     globalsContext.setOpenFileIds((fileIds) => fileIds.filter((fileId) => fileId !== props.id));
   };
 
@@ -40,6 +61,7 @@ const Tab: React.FC<TabProps> = (props) => {
       display={'flex'}
       alignItems={'center'}
       gap={saveRequired ? 3 : 1}
+      onClick={onClickTab}
     >
       <Typography variant={'body1'} component={'p'}>
         {props.name}
