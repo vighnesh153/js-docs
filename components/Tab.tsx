@@ -40,7 +40,19 @@ const Tab: React.FC<TabProps> = (props) => {
     // To prevent invoking the `onClickTab` function
     e.stopPropagation();
 
-    globalsContext.setOpenFiles((files) => files.filter((file) => file.id !== props.id));
+    // Update the openFiles array
+    const newOpenFiles = globalsContext.openFiles.filter((file) => file.id !== props.id);
+    globalsContext.setOpenFiles(newOpenFiles);
+
+    // Change the route to new open file if any
+    if (newOpenFiles.length > 0) {
+      const file = newOpenFiles[0];
+      router.push(`/${file.isPrivate ? 'private' : 'public'}/${file.id}`);
+      return;
+    }
+
+    // If no file is open, go to root
+    router.push(`/`);
   };
 
   return (
