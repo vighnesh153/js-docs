@@ -29,8 +29,10 @@ const HomePage = () => {
         <li>Pending: Markdown text boxes with support for Katex (Math equations)</li>
       </ul>
       <Typography>
-        Open any file from the explorer on the left and feel free to play around with it. Note: All
-        changes you make will be lost on refresh.
+        Open any file, like "Playground", from the explorer on the left and feel free to play around
+        with it. Note: All changes you make will be lost on refresh. Also note, you can only modify
+        existing cells and cannot create or delete cells. And, you won't be able to create/delete a
+        file as only Admin (me) has permission to do so.
       </Typography>
     </Box>
   );

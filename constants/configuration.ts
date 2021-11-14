@@ -12,6 +12,10 @@ const configuration = {
       measurementId: 'G-SHHZH0Z2ER',
     },
     FIRESTORE: {
+      /**
+       * Firestore Collection information. If you update this, make sure to update the firestore.rules file too and
+       * update the Firestore rules on Firebase too.
+       */
       COLLECTIONS: {
         FILE_META: 'file-meta',
         FILES: 'files',
