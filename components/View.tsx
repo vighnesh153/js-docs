@@ -23,6 +23,10 @@ const _View: React.FC = (props) => {
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <Tabs />
       {props.children}
+
+      {/* Adding this for having some space between tabs and file content*/}
+      <Box height={'20px'} />
+
       {globalContext.openFiles.map((file) => (
         <Box
           key={file.id}
