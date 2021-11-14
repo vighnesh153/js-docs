@@ -2,7 +2,8 @@ import ExplorerItem from 'models/ExplorerItem';
 import Tree from 'models/Tree';
 
 /**
- * Sorts the children
+ * Sorts the children based on the whether they are file or directory,
+ * and in ascending order of name.
  */
 const sortedChildren = (children: ExplorerItem[]): ExplorerItem[] => {
   const childrenCopy = [...children];
@@ -41,6 +42,10 @@ const constructTree = (items: ExplorerItem[]): Tree => {
       item.content = sortedChildren(childItems[item.id || ''] || []);
     }
   });
+
+  // Sort the root directories
+  tree.public = sortedChildren(tree.public);
+  tree.private = sortedChildren(tree.private);
 
   return tree;
 };
