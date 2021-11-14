@@ -26,7 +26,7 @@ const HomePage = () => {
           In browser javascript code transpiling. Supports React. You can directly import any npm
           module and start working with it.
         </li>
-        <li>Markdown text boxes with support for Katex (Math equations)</li>
+        <li>Pending: Markdown text boxes with support for Katex (Math equations)</li>
       </ul>
       <Typography>
         Open any file from the explorer on the left and feel free to play around with it. Note: All
