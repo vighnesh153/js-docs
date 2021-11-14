@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Cell from 'models/Cell';
 import { useFileContextActions } from 'store/contexts/FileContext';
 
-import MarkdownEditor, { MarkdownPreview } from 'components/MarkdownEditor';
+import RemirrorEditor, { StyledRemirrorText } from 'components/RemirrorEditor';
 
 interface TextCellProps {
   cell: Cell;
@@ -32,7 +32,8 @@ const TextCell: React.FC<TextCellProps> = ({ cell }) => {
   if (editing) {
     return (
       <div className="text-editor" ref={ref}>
-        <MarkdownEditor code={cell.content} onChange={(value) => updateCell(cell.id, value)} />
+        <RemirrorEditor html={cell.content} onChange={(html) => updateCell(cell.id, html)} />
+        {/*<MarkdownEditor code={cell.content} onChange={(value) => updateCell(cell.id, value)} />*/}
       </div>
     );
   }
@@ -40,7 +41,12 @@ const TextCell: React.FC<TextCellProps> = ({ cell }) => {
   return (
     <div className="text-editor card" onClick={() => setEditing(true)}>
       <div className="card-content">
-        <MarkdownPreview code={cell.content || 'Click to edit'} />
+        <StyledRemirrorText
+          // This class name is used in the text-editor-cell.scss file
+          className={'view-only'}
+          html={cell.content || 'Click to edit'}
+        />
+        {/*<MarkdownPreview code={cell.content || 'Click to edit'} />*/}
       </div>
     </div>
   );
