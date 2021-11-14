@@ -6,9 +6,11 @@ import CellListItem from 'components/CellListItem';
 import AddCell from 'components/AddCell';
 
 import FileContext from 'store/contexts/FileContext';
+import JsDocsAuthContext from 'contexts/AuthContext';
 
 const CellList: React.FC = () => {
   const fileContext = useContext(FileContext);
+  const { isAdmin } = useContext(JsDocsAuthContext);
 
   const cells = useMemo(() => {
     const { order, data } = fileContext.cells;
@@ -18,7 +20,7 @@ const CellList: React.FC = () => {
   const renderedCells = cells.map((cell) => (
     <React.Fragment key={cell.id}>
       <CellListItem cell={cell} />
-      <AddCell previousCellId={cell.id} />
+      {isAdmin && <AddCell previousCellId={cell.id} />}
     </React.Fragment>
   ));
 
@@ -28,7 +30,7 @@ const CellList: React.FC = () => {
       className="cell-list"
       margin={'0 25px 50vh'}
     >
-      <AddCell forceVisible={cells.length === 0} previousCellId={null} />
+      {isAdmin && <AddCell forceVisible={cells.length === 0} previousCellId={null} />}
       {renderedCells}
     </Box>
   );

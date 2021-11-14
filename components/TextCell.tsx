@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 
 import Cell from 'models/Cell';
 import { useFileContextActions } from 'store/contexts/FileContext';
+import JsDocsAuthContext from 'contexts/AuthContext';
 
 import RemirrorEditor, { StyledRemirrorText } from 'components/RemirrorEditor';
 
@@ -10,6 +11,8 @@ interface TextCellProps {
 }
 
 const TextCell: React.FC<TextCellProps> = ({ cell }) => {
+  const { isAdmin } = useContext(JsDocsAuthContext);
+
   const ref = useRef<HTMLDivElement | null>(null);
   const [editing, setEditing] = useState(false);
   const { updateCell } = useFileContextActions();
@@ -33,20 +36,18 @@ const TextCell: React.FC<TextCellProps> = ({ cell }) => {
     return (
       <div className="text-editor" ref={ref}>
         <RemirrorEditor html={cell.content} onChange={(html) => updateCell(cell.id, html)} />
-        {/*<MarkdownEditor code={cell.content} onChange={(value) => updateCell(cell.id, value)} />*/}
       </div>
     );
   }
 
   return (
-    <div className="text-editor card" onClick={() => setEditing(true)}>
+    <div className="text-editor card" onClick={() => (isAdmin ? setEditing(true) : null)}>
       <div className="card-content">
         <StyledRemirrorText
           // This class name is used in the text-editor-cell.scss file
           className={'view-only'}
           html={cell.content || 'Click to edit'}
         />
-        {/*<MarkdownPreview code={cell.content || 'Click to edit'} />*/}
       </div>
     </div>
   );
