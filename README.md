@@ -102,3 +102,16 @@ automatically, everytime you make a push to it.
 where you deploy. Also, while developing locally, allow-list `localhost` 
 in Firebase authentication too so that you can login locally and update 
 stuff.
+
+
+### Liked this and/or found this useful?
+* Drop a star ⭐️ on this repo. 
+* Connect with me on [LinkedIn](https://www.linkedin.com/in/vighnesh153/). Would love to chat about this.
+
+
+### Found issues or have any questions?
+* Feel free to open a ticket in Github issues. I would be happy to assist.
+
+
+
+## Thanks for taking time to go through this. It means a lot to me. 🙏😍🥺 
