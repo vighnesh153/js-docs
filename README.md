@@ -87,7 +87,7 @@ how you can use it for yourself.
 * Add the firebase-configuration in the `constants/configuration.js` file.
 * Update the admin email addresses to your google email addresses in both 
 `constants/configuration.js` and `firestore.rules` files.
-* The firestore rules are automatically updated. You have to create a 
+* The firestore rules are _**NOT**_ automatically updated. You have to create a 
 firestore database in firebase and add these rules to that.
 
 ##### Deployment
