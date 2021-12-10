@@ -1,12 +1,16 @@
-import React, { useContext, useEffect } from 'react';
-import { GetStaticProps } from 'next';
+import React, { ReactElement, useContext, useEffect } from 'react';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 import FilePage from 'components/FilePage';
+import RootLayout from 'components/RootLayout';
+
 import { fetchExplorerItems } from 'services/api';
+
 import GlobalsContext from 'contexts/GlobalsContext';
+
 import ExplorerItem from 'models/ExplorerItem';
 
-const PrivateFile: React.FC<{ explorerItems: ExplorerItem[] }> = (props) => {
+function PrivateFilePage(props: { explorerItems: ExplorerItem[] }) {
   const globalContext = useContext(GlobalsContext);
 
   useEffect(() => {
@@ -16,9 +20,13 @@ const PrivateFile: React.FC<{ explorerItems: ExplorerItem[] }> = (props) => {
   }, []);
 
   return <FilePage isPrivate />;
-};
+}
 
-export default PrivateFile;
+export default PrivateFilePage;
+
+PrivateFilePage.getLayout = function getLayout(page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   const explorerItems = await fetchExplorerItems();
@@ -29,4 +37,15 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     revalidate: 10,
   };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const explorerItems = await fetchExplorerItems();
+
+  // Get the paths we want to pre-render based on explorer items
+  const paths = explorerItems.map((item) => ({
+    params: { file_id: item.id },
+  }));
+
+  return { paths, fallback: 'blocking' };
 };

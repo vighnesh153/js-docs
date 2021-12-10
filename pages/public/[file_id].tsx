@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 import FilePage from 'components/FilePage';
 import RootLayout from 'components/RootLayout';
@@ -37,4 +37,15 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     revalidate: 10,
   };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const explorerItems = await fetchExplorerItems();
+
+  // Get the paths we want to pre-render based on explorer items
+  const paths = explorerItems.map((item) => ({
+    params: { file_id: item.id },
+  }));
+
+  return { paths, fallback: 'blocking' };
 };
