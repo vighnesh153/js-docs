@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 import FilePage from 'components/FilePage';
 import RootLayout from 'components/RootLayout';
@@ -28,12 +28,13 @@ PublicFilePage.getLayout = function getLayout(page: ReactElement) {
   return <RootLayout>{page}</RootLayout>;
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const explorerItems = await fetchExplorerItems();
 
   return {
     props: {
       explorerItems,
     },
+    revalidate: 10,
   };
 };
