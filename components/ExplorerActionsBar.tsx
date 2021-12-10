@@ -52,7 +52,7 @@ const ExplorerActionsBar: React.FC = () => {
         });
         break;
       case Action.Refresh:
-        fetchAndPopulateTree({ showSuccessBanner: true });
+        fetchAndPopulateTree({ isRefresh: true });
         break;
     }
   };

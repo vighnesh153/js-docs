@@ -1,12 +1,22 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
 
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 
 import GlobalsContext from 'contexts/GlobalsContext';
+import { fetchExplorerItems } from 'services/api';
+import ExplorerItem from 'models/ExplorerItem';
+import RootLayout from 'components/RootLayout';
 
-const HomePage = () => {
+function HomePage(props: { explorerItems: ExplorerItem[] }) {
   const globalContext = useContext(GlobalsContext);
+
+  useEffect(() => {
+    if (globalContext.explorerItems.length === 0) {
+      globalContext.setExplorerItems(props.explorerItems);
+    }
+  }, []);
 
   if (globalContext.openFiles.length > 0) {
     return null;
@@ -36,6 +46,20 @@ const HomePage = () => {
       </Typography>
     </Box>
   );
-};
+}
 
 export default HomePage;
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const explorerItems = await fetchExplorerItems();
+
+  return {
+    props: {
+      explorerItems,
+    },
+  };
+};

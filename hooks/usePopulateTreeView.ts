@@ -18,7 +18,7 @@ const usePopulateTreeView = (props?: Props) => {
   const { isAdmin } = useContext(JsDocsAuthContext);
 
   const fetchAndPopulateTree = useCallback(
-    (args?: { showSuccessBanner?: boolean }) => {
+    (args?: { isRefresh?: boolean }) => {
       const { FILE_META, PRIVATE } = configuration.FIREBASE.FIRESTORE.COLLECTIONS;
 
       /**
@@ -35,10 +35,12 @@ const usePopulateTreeView = (props?: Props) => {
       /**
        * Fetch from firebase
        */
-      const toastId = toast.dark('Fetching explorer... Hang on', {
-        isLoading: true,
-        autoClose: false,
-      });
+      const infoToastId = args?.isRefresh
+        ? toast.dark('Refreshing explorer...', {
+            isLoading: true,
+            autoClose: false,
+          })
+        : null;
       Promise.all(promises)
         .then((responses) => {
           const explorerItems: ExplorerItem[] = [];
@@ -52,12 +54,14 @@ const usePopulateTreeView = (props?: Props) => {
            */
           globalsContext.setExplorerItems(explorerItems);
 
-          if (args?.showSuccessBanner) {
+          if (args?.isRefresh) {
             toast.success('Refresh successful.');
           }
         })
         .finally(() => {
-          toast.dismiss(toastId);
+          if (infoToastId) {
+            toast.dismiss(infoToastId);
+          }
         });
     },
     [isAdmin, globalsContext.setExplorerItems]

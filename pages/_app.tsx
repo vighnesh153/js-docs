@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import styled from 'styled-components';
 
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,36 +11,25 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import 'styles/globals.scss';
 
 import theme from 'util/theme';
 
-import Navbar from 'components/Navbar';
+import RootLayout from 'components/RootLayout';
 
-import { JsDocsAuthProvider } from 'contexts/AuthContext';
-import { GlobalsContextProvider } from 'contexts/GlobalsContext';
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
-import Modal, { ModalProvider } from 'components/Modal';
-import Resizable from 'components/Resizable';
-import Explorer from 'components/Explorer';
-import View from 'components/View';
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
-const StyledMain = styled.main`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-
-  .viewer {
-    flex: 1;
-    min-width: 0;
-  }
-`;
-
-const App: React.FC<AppProps> = (props) => {
-  const { Component, pageProps } = props;
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <React.Fragment>
@@ -57,43 +46,12 @@ const App: React.FC<AppProps> = (props) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <JsDocsAuthProvider>
-          <GlobalsContextProvider>
-            <ModalProvider>
-              <Modal />
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                theme={'colored'}
-                draggable
-                pauseOnHover
-              />
-              <div className="_app-body">
-                <Navbar />
-                <div className="main">
-                  <StyledMain>
-                    <Resizable direction={'horizontal'} initialWidthMultiplier={0.25}>
-                      <Explorer />
-                    </Resizable>
-                    <div className="viewer">
-                      <View>
-                        <Component {...pageProps} />
-                      </View>
-                    </div>
-                  </StyledMain>
-                </div>
-              </div>
-            </ModalProvider>
-          </GlobalsContextProvider>
-        </JsDocsAuthProvider>
+        <RootLayout>
+          <Component {...pageProps} />
+        </RootLayout>
       </ThemeProvider>
     </React.Fragment>
   );
-};
+}
 
 export default App;
