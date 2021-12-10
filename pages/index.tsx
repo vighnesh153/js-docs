@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
@@ -54,12 +54,13 @@ HomePage.getLayout = function getLayout(page: ReactElement) {
   return <RootLayout>{page}</RootLayout>;
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const explorerItems = await fetchExplorerItems();
 
   return {
     props: {
       explorerItems,
     },
+    revalidate: 10,
   };
 };
